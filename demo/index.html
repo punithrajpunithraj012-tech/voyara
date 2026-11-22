@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voyara - Plan less. Wander more.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22 role=%22img%22 aria-label=%22Voyara logo%22%3E %3Cdefs%3E %3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%230B1437%22/%3E%3Cstop offset=%221%22 stop-color=%22%233B2FB8%22/%3E%3C/linearGradient%3E %3ClinearGradient id=%22L%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%2300E0D0%22/%3E%3Cstop offset=%221%22 stop-color=%22%235B8CFF%22/%3E%3C/linearGradient%3E %3ClinearGradient id=%22R%22 x1=%220%22 y1=%221%22 x2=%221%22 y2=%220%22%3E%3Cstop offset=%220%22 stop-color=%22%23FF6B4A%22/%3E%3Cstop offset=%221%22 stop-color=%22%23FFB020%22/%3E%3C/linearGradient%3E %3CradialGradient id=%22S%22 cx=%22.5%22 cy=%22.5%22 r=%22.5%22%3E%3Cstop offset=%220%22 stop-color=%22%23FFE9A8%22/%3E%3Cstop offset=%221%22 stop-color=%22%23FFB020%22/%3E%3C/radialGradient%3E %3C/defs%3E %3Crect width=%22120%22 height=%22120%22 rx=%2230%22 fill=%22url%28%23bg%29%22/%3E %3Ccircle cx=%2260%22 cy=%2255%22 r=%2212%22 fill=%22url%28%23S%29%22/%3E %3Cpath d=%22M26 36 L58 94%22 fill=%22none%22 stroke=%22url%28%23L%29%22 stroke-width=%2215%22 stroke-linecap=%22round%22/%3E %3Cpath d=%22M94 36 L58 94%22 fill=%22none%22 stroke=%22url%28%23R%29%22 stroke-width=%2215%22 stroke-linecap=%22round%22/%3E %3Cpath d=%22M28 24 C 42 -2%2C 80 -2%2C 92 18%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223.2%22 stroke-linecap=%22round%22 stroke-dasharray=%220.1 7.2%22/%3E %3Ccircle cx=%2294%22 cy=%2230%22 r=%2212%22 fill=%22%23fff%22/%3E%3Ccircle cx=%2294%22 cy=%2230%22 r=%224.8%22 fill=%22%230B1437%22/%3E %3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+:root{--ink:#0B1437;--violet:#5B3FF0;--sky:#2F7BFF;--aqua:#00C2B8;--coral:#FF6B4A;--sun:#FFB020;--sand:#FAF7F2;--line:#e8e4f5;--muted:#5b6482}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Figtree,system-ui,sans-serif;background:var(--sand);color:#1e2745;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:Sora,system-ui,sans-serif;color:var(--ink);margin:0}
+button,input,select{font:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;transition:.15s;text-decoration:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:linear-gradient(90deg,var(--sky),var(--violet));color:#fff;box-shadow:0 6px 16px rgba(91,63,240,.28)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-accent{background:var(--coral);color:#fff}.btn-accent:hover{filter:brightness(.95)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid rgba(91,63,240,.25)}.btn-ghost:hover{background:rgba(91,63,240,.06)}
+.btn-white{background:#fff;color:var(--ink)}
+.btn-line{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45)}
+.btn-sm{padding:6px 10px;font-size:12px;border-radius:10px}
+.btn-del{background:transparent;color:#d33;padding:4px 8px}
+.input{width:100%;border:1px solid #cfd3e3;border-radius:12px;padding:10px 13px;background:#fff;font-size:14px}
+.input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(91,63,240,.2);outline:0}
+.card{background:#fff;border:1px solid rgba(91,63,240,.1);border-radius:22px;padding:20px;box-shadow:0 2px 10px rgba(91,63,240,.05)}
+.chip{display:inline-flex;align-items:center;gap:4px;background:rgba(91,63,240,.1);color:var(--violet);border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700}
+.badge{background:var(--sun);color:var(--ink);border-radius:6px;padding:2px 7px;font-size:11px;font-weight:800}
+.note{border:1px solid rgba(47,123,255,.25);background:rgba(47,123,255,.05);border-radius:12px;padding:10px 12px;font-size:13px;color:#33405f}
+.note.warn{border-color:rgba(255,176,32,.6);background:rgba(255,176,32,.16);color:#6b4500}
+.err{border:1px solid #f3b6b6;background:#fff1f1;color:#a02020;border-radius:12px;padding:10px 12px;font-size:13px}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:Sora,system-ui,sans-serif;font-weight:800;font-size:21px;letter-spacing:-.02em;text-decoration:none}
+.brand img{width:38px;height:38px}
+/* landing */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;color:#fff;background:#0B1437 url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAwIDkwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgc2xpY2UiPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJza3kiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwQjE0MzciLz48c3RvcCBvZmZzZXQ9Ii40NSIgc3RvcC1jb2xvcj0iIzNCMkZCOCIvPjxzdG9wIG9mZnNldD0iLjc1IiBzdG9wLWNvbG9yPSIjQjI0NzlDIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY4QTVDIi8+PC9saW5lYXJHcmFkaWVudD4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0ic3VuIiBjeD0iLjUiIGN5PSIuNSIgcj0iLjUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI0ZGRTI5QSIvPjxzdG9wIG9mZnNldD0iLjYiIHN0b3AtY29sb3I9IiNGRkIwMjAiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkIwMjAiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNza3kpIi8+CiAgPGcgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjgiPjxjaXJjbGUgY3g9IjE4MCIgY3k9IjEyMCIgcj0iMiIvPjxjaXJjbGUgY3g9IjQyMCIgY3k9IjcwIiByPSIxLjYiLz48Y2lyY2xlIGN4PSI3NjAiIGN5PSIxNTAiIHI9IjIiLz48Y2lyY2xlIGN4PSIxMDEwIiBjeT0iNjAiIHI9IjEuOCIvPjxjaXJjbGUgY3g9IjEzMzAiIGN5PSIxMzAiIHI9IjIuMiIvPjxjaXJjbGUgY3g9IjE1MDAiIGN5PSIyNjAiIHI9IjEuNiIvPjxjaXJjbGUgY3g9IjkwIiBjeT0iMzAwIiByPSIxLjYiLz48Y2lyY2xlIGN4PSI2MDAiIGN5PSIyNjAiIHI9IjEuNCIvPjwvZz4KICA8Y2lyY2xlIGN4PSIxMTMwIiBjeT0iNTYwIiByPSIyMzAiIGZpbGw9InVybCgjc3VuKSIvPgogIDxwYXRoIGQ9Ik0xMDIwIDE1MEMxMjAwIDYwIDEzMzAgMTcwIDE1MDAgOTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii43IiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWRhc2hhcnJheT0iMiAxMiIvPgogIDxwYXRoIGQ9Ik0xNTAwIDkwbC0yMi00IDggMTIgMi02eiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjkiLz4KICA8cGF0aCBkPSJNMCA2NDAgMjIwIDQ3MCA0MDAgNjAwIDY0MCA0MDAgOTAwIDYyMCAxMTIwIDUyMCAxMzYwIDY1MCAxNjAwIDUwMFY5MDBIMHoiIGZpbGw9IiM1QTJFOUMiIG9wYWNpdHk9Ii43NSIvPgogIDxwYXRoIGQ9Ik0wIDcyMCAyNjAgNTYwIDQ4MCA2OTAgNzYwIDUyMCAxMDQwIDcwMCAxMzAwIDU5MCAxNjAwIDcyMFY5MDBIMHoiIGZpbGw9IiMzMzIwNkYiLz4KICA8cGF0aCBkPSJNMCA4MDAgMzAwIDcwMCA1NjAgNzkwIDg4MCA2OTAgMTE4MCA4MDAgMTYwMCA3MjBWOTAwSDB6IiBmaWxsPSIjMEIxNDM3Ii8+Cjwvc3ZnPgo=') center/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(11,20,55,.8),transparent 55%,rgba(11,20,55,.3));pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.hero header{display:flex;justify-content:space-between;align-items:center;padding:20px 5vw}
+.hero .copy{margin-top:auto;padding:0 5vw 9vh;animation:rise .8s ease-out both}
+.hero h1{color:#fff;font-size:clamp(42px,8vw,86px);line-height:1.04;letter-spacing:-.03em;font-weight:800}
+.grad{background:linear-gradient(90deg,var(--sun),var(--coral),var(--aqua));-webkit-background-clip:text;background-clip:text;color:transparent}
+.glass{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border-radius:99px;padding:7px 14px;font-weight:700;font-size:14px;margin-bottom:18px}
+.hero p.lead{max-width:560px;font-size:18px;color:rgba(255,255,255,.88);margin:18px 0 28px}
+.sec{padding:64px 5vw;max-width:1180px;margin:0 auto}
+.sec h2{text-align:center;font-size:clamp(26px,4vw,38px);font-weight:800}
+.ico{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;color:#fff;margin-bottom:12px}
+.step{background:var(--ink);color:#fff;border-radius:22px;padding:24px}
+.step h3{color:#fff;margin-top:14px}.step p{color:rgba(255,255,255,.75);font-size:14px}
+.step .n{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--sun),var(--coral));color:var(--ink);display:grid;place-items:center;font-family:Sora,system-ui,sans-serif;font-weight:800}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hero .copy{animation:none}}
+/* auth */
+.authwrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(160deg,#0B1437,#3B2FB8 60%,#B2479C)}
+.authcard{width:min(420px,100%);background:#fff;border-radius:26px;padding:28px}
+.authcard label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+/* app shell */
+.shell{display:flex;min-height:100vh}
+.side{width:260px;background:var(--ink);color:#fff;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;flex:none}
+.side .brand{color:#fff;margin:0 6px 20px}
+.side a.nav{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;color:rgba(255,255,255,.72);font-weight:600;font-size:14px;text-decoration:none;margin-bottom:4px}
+.side a.nav:hover{background:rgba(255,255,255,.1);color:#fff}
+.side a.nav.on{background:linear-gradient(90deg,var(--sky),var(--violet));color:#fff;box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.main{flex:1;min-width:0}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 24px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.menu{display:none;background:none;border:0;cursor:pointer;color:var(--ink)}
+.page{max-width:1100px;margin:0 auto;padding:26px 22px 60px}
+.page h1{font-size:clamp(24px,3.5vw,32px);font-weight:800}
+.page .sub{color:var(--muted);margin:6px 0 22px;max-width:640px}
+@media (max-width:900px){.side{position:fixed;z-index:40;left:0;transform:translateX(-100%);transition:.25s}.side.open{transform:none}.menu{display:block}.top{padding:12px 16px}}
+.tile{display:flex;gap:14px;align-items:flex-start;text-decoration:none;transition:.15s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(91,63,240,.14)}
+.tile.main{background:linear-gradient(100deg,var(--ink),#2a1f8f 60%,var(--violet));border:0;grid-column:1/-1}
+.tile.main h3,.tile.main p{color:#fff}.tile.main p{opacity:.8}
+.tile h3{font-size:17px}.tile p{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+/* planner */
+.chat{max-width:720px}
+.bubble{padding:11px 15px;border-radius:18px;max-width:85%;font-size:14.5px;margin:8px 0}
+.bubble.q{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}
+.bubble.a{background:var(--violet);color:#fff;margin-left:auto;border-top-right-radius:6px}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.tab{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+#map{height:440px;border-radius:20px;z-index:0;background:#dfe6f3}
+.stop{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.stop:last-child{border:0}
+.pinn{width:28px;height:28px;border-radius:50%;color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
+.vy-pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);display:grid;place-items:center}
+.vy-pin span{transform:rotate(45deg);color:#fff;font:700 12px Figtree,sans-serif}
+.bar{height:10px;border-radius:99px;background:#ece9f8;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--sky),var(--violet));border-radius:99px}
+.wx{text-align:center;padding:14px 10px}
+.wx b{font-family:Sora,system-ui,sans-serif;font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+.chatbox{height:min(420px,55vh);overflow:auto;padding:6px 4px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.spin{width:16px;height:16px;border:2px solid #cfc8f5;border-top-color:var(--violet);border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media print{.side,.top,.noprint,.tabs{display:none!important}.page{padding:0}#map{height:300px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ============ Voyara demo prototype ============
+   Runs with no install. Data stays in this browser (localStorage). No real accounts.
+   Live data (map tiles, weather, unknown-city search) needs internet; sample cities work offline. */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s = '') => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const COLORS = ['#5B3FF0', '#2F7BFF', '#00C2B8', '#FF6B4A', '#FFB020', '#C23DA0', '#3A8F5C', '#8A5A2B', '#5B6B7C', '#B23B3B'];
+
+/* ---- storage (safe if blocked) ---- */
+let mem = {};
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem('vy_demo')) || mem; } catch { return mem; } },
+  set(v) { mem = v; try { localStorage.setItem('vy_demo', JSON.stringify(v)); } catch {} }
+};
+let DB = store.get(); DB.users ||= {}; DB.data ||= {}; DB.session ||= null;
+const save = () => store.set(DB);
+const me = () => DB.session && DB.users[DB.session];
+const D = () => (DB.data[DB.session] ||= { trips: [], expenses: [], packing: [], reminders: [], groups: [], limit: 0 });
+
+/* ---- icons ---- */
+const P = {
+  home: '<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
+  route: '<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h8a3 3 0 0 0 0-6H8a3 3 0 0 1 0-6h8"/>',
+  bookmark: '<path d="M6 3h12v18l-6-4-6 4z"/>',
+  wallet: '<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 14h2"/>',
+  bag: '<rect x="5" y="8" width="14" height="13" rx="4"/><path d="M9 8V5a3 3 0 0 1 6 0v3M9 15h6"/>',
+  cloud: '<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16 18z"/>',
+  users: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 4 6"/>',
+  bot: '<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>',
+  out: '<path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9"/>',
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  map: '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+  spark: '<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',
+  send: '<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
+};
+const ic = (n, extra = '') => `<svg class="i" viewBox="0 0 24 24" ${extra}>${P[n]}</svg>`;
+const LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="38" height="38" aria-hidden="true"> <defs> <linearGradient id="vlbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1437"/><stop offset="1" stop-color="#3B2FB8"/></linearGradient> <linearGradient id="vlL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00E0D0"/><stop offset="1" stop-color="#5B8CFF"/></linearGradient> <linearGradient id="vlR" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FF6B4A"/><stop offset="1" stop-color="#FFB020"/></linearGradient> <radialGradient id="vlS" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8"/><stop offset="1" stop-color="#FFB020"/></radialGradient> </defs> <rect width="120" height="120" rx="30" fill="url(#vlbg)"/> <circle cx="60" cy="55" r="12" fill="url(#vlS)"/> <path d="M26 36 L58 94" fill="none" stroke="url(#vlL)" stroke-width="15" stroke-linecap="round"/> <path d="M94 36 L58 94" fill="none" stroke="url(#vlR)" stroke-width="15" stroke-linecap="round"/> <path d="M28 24 C 42 -2, 80 -2, 92 18" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="0.1 7.2"/> <circle cx="94" cy="30" r="12" fill="#fff"/><circle cx="94" cy="30" r="4.8" fill="#0B1437"/> </svg>`;
+const brand = (light = true) => `<a class="brand" href="#/" style="color:${light ? '#fff' : 'var(--ink)'}">${LOGO}<span>Voyara</span></a>`;
+
+/* ---- sample destinations (offline-safe, approximate coordinates) ---- */
+const CITIES = {
+  jaipur: { name: 'Jaipur, Rajasthan', lat: 26.9124, lon: 75.7873, food: ['Dal baati churma', 'Pyaaz kachori', 'Laal maas (non-veg)', 'Ghewar (sweet)', 'Lassi at Chaura Bazaar'], stay: ['Near C-Scheme / MI Road', 'Old City near Hawa Mahal', 'Near Amer Road'], stops: [
+    ['Amber Fort', 26.9855, 75.8513], ['City Palace', 26.9258, 75.8237], ['Hawa Mahal', 26.9239, 75.8267], ['Jantar Mantar', 26.9247, 75.8246], ['Nahargarh Fort', 26.9372, 75.8156], ['Jal Mahal', 26.9535, 75.846], ['Albert Hall Museum', 26.9118, 75.8195], ['Birla Mandir', 26.8924, 75.8156], ['Jaigarh Fort', 26.9857, 75.8454]] },
+  goa: { name: 'Goa', lat: 15.4989, lon: 73.8278, food: ['Goan fish curry rice', 'Bebinca (sweet)', 'Pao bhaji at Panjim', 'Prawn balchão', 'Vegetarian thali'], stay: ['North Goa (Calangute / Baga) for nightlife', 'South Goa (Palolem) for calm', 'Panjim for culture'], stops: [
+    ['Basilica of Bom Jesus', 15.5009, 73.9116], ['Se Cathedral', 15.5025, 73.9119], ['Fort Aguada', 15.4927, 73.7737], ['Baga Beach', 15.5553, 73.7517], ['Anjuna Beach', 15.5736, 73.7413], ['Chapora Fort', 15.6054, 73.7352], ['Fontainhas (Latin Quarter)', 15.496, 73.8335], ['Dudhsagar Falls', 15.3144, 74.3143], ['Palolem Beach', 15.01, 74.0232]] },
+  manali: { name: 'Manali, Himachal Pradesh', lat: 32.2396, lon: 77.1887, food: ['Siddu with ghee', 'Trout fish', 'Thukpa', 'Momos on Mall Road', 'Himachali dham'], stay: ['Old Manali (cafes, quiet)', 'Mall Road area (central)', 'Vashisht (hot springs)'], stops: [
+    ['Hadimba Temple', 32.2483, 77.1773], ['Manu Temple', 32.2587, 77.1779], ['Mall Road', 32.2432, 77.1892], ['Old Manali', 32.2603, 77.1796], ['Vashisht Hot Springs', 32.2646, 77.1893], ['Jogini Falls', 32.2701, 77.1962], ['Solang Valley', 32.3162, 77.1581], ['Rohtang Pass (permit needed)', 32.3716, 77.2466]] },
+  udaipur: { name: 'Udaipur, Rajasthan', lat: 24.5854, lon: 73.7125, food: ['Dal baati', 'Mirchi vada', 'Gatte ki sabzi', 'Lakeside cafes', 'Malpua (sweet)'], stay: ['Near Lake Pichola', 'Old City near Jagdish Temple', 'Fateh Sagar side (quiet)'], stops: [
+    ['City Palace', 24.5764, 73.6835], ['Jagdish Temple', 24.58, 73.6835], ['Bagore Ki Haveli', 24.5791, 73.6812], ['Lake Pichola', 24.5726, 73.6797], ['Fateh Sagar Lake', 24.5995, 73.6797], ['Saheliyon Ki Bari', 24.599, 73.688], ['Sajjangarh Monsoon Palace', 24.5946, 73.6469]] },
+  kochi: { name: 'Kochi, Kerala', lat: 9.9312, lon: 76.2673, food: ['Kerala fish curry meals', 'Appam with stew', 'Banana chips', 'Seafood at Fort Kochi', 'Filter coffee'], stay: ['Fort Kochi (heritage)', 'Ernakulam (central)', 'Marine Drive area'], stops: [
+    ['Chinese Fishing Nets', 9.9658, 76.2421], ['Santa Cruz Basilica', 9.9651, 76.2432], ['Mattancherry Palace', 9.9577, 76.2594], ['Jew Town', 9.9573, 76.259], ['Marine Drive', 9.9816, 76.2755], ['Hill Palace Museum', 9.9525, 76.3637], ['Cherai Beach', 10.1424, 76.1791]] },
+  varanasi: { name: 'Varanasi, Uttar Pradesh', lat: 25.3176, lon: 82.9739, food: ['Kachori sabzi', 'Banarasi paan', 'Malaiyyo (winter)', 'Thandai', 'Tamatar chaat'], stay: ['Near Assi Ghat', 'Near Dashashwamedh Ghat', 'Cantt area (quieter)'], stops: [
+    ['Kashi Vishwanath Temple', 25.3109, 83.0107], ['Dashashwamedh Ghat', 25.3076, 83.0104], ['Manikarnika Ghat', 25.3115, 83.014], ['Assi Ghat', 25.2893, 83.006], ['Banaras Hindu University', 25.2677, 82.9913], ['Ramnagar Fort', 25.2686, 83.0237], ['Sarnath', 25.3811, 83.0227]] },
+  delhi: { name: 'Delhi', lat: 28.6139, lon: 77.209, food: ['Chole bhature', 'Paranthe Wali Gali', 'Kebabs near Jama Masjid', 'Chaat in Chandni Chowk', 'Daulat ki chaat (winter)'], stay: ['Connaught Place', 'Paharganj (budget)', 'South Delhi (quieter)'], stops: [
+    ['Red Fort', 28.6562, 77.241], ['Jama Masjid', 28.6507, 77.2334], ['Chandni Chowk', 28.6506, 77.2303], ['India Gate', 28.6129, 77.2295], ['Humayun\'s Tomb', 28.5933, 77.2507], ['Lotus Temple', 28.5535, 77.2588], ['Qutub Minar', 28.5245, 77.1855], ['Akshardham', 28.6127, 77.2773]] },
+  mumbai: { name: 'Mumbai, Maharashtra', lat: 19.076, lon: 72.8777, food: ['Vada pav', 'Pav bhaji', 'Bombay sandwich', 'Seafood thali', 'Irani cafe chai and bun maska'], stay: ['Colaba (tourist hub)', 'Bandra (cafes)', 'Churchgate area'], stops: [
+    ['Gateway of India', 18.922, 72.8347], ['Colaba Causeway', 18.9156, 72.8258], ['CSMT Station', 18.9398, 72.8355], ['Marine Drive', 18.943, 72.8238], ['Haji Ali Dargah', 18.9827, 72.8089], ['Elephanta Caves (ferry)', 18.9633, 72.9315], ['Bandra-Worli Sea Link view', 19.03, 72.815], ['Sanjay Gandhi National Park', 19.2147, 72.9106]] },
+};
+const findCity = q => { q = q.toLowerCase(); return Object.entries(CITIES).find(([k, c]) => q.includes(k) || c.name.toLowerCase().startsWith(q.trim()))?.[1]; };
+const km = (a, b) => { const R = 6371, r = x => x * Math.PI / 180, dl = r(b.lat - a.lat), dn = r(b.lon - a.lon); const h = Math.sin(dl / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
+
+/* ---- network helpers (CORS-enabled public APIs) ---- */
+const tmo = (url, opts = {}, ms = 9000) => fetch(url, { ...opts, signal: AbortSignal.timeout(ms) }).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+async function geocode(q) {
+  const d = await tmo('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' + encodeURIComponent(q));
+  return d[0] ? { name: d[0].display_name.split(',').slice(0, 2).join(','), lat: +d[0].lat, lon: +d[0].lon } : null;
+}
+async function osmAttractions(c) {
+  const q = `[out:json][timeout:20];(nwr["tourism"~"attraction|museum|viewpoint|zoo|theme_park"]["name"](around:15000,${c.lat},${c.lon});nwr["historic"~"castle|fort|monument|temple|ruins|palace"]["name"](around:15000,${c.lat},${c.lon}););out center 60;`;
+  const d = await tmo('https://overpass-api.de/api/interpreter', { method: 'POST', body: 'data=' + encodeURIComponent(q) }, 20000);
+  const seen = new Set();
+  return d.elements.map(e => ({ n: e.tags.name, lat: e.lat ?? e.center?.lat, lon: e.lon ?? e.center?.lon })).filter(p => p.lat && p.n && !seen.has(p.n) && seen.add(p.n)).slice(0, 40).map(p => [p.n, p.lat, p.lon]);
+}
+async function forecast(lat, lon) {
+  const d = await tmo(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7`);
+  return d.daily.time.map((t, i) => ({ date: t, code: d.daily.weathercode[i], max: Math.round(d.daily.temperature_2m_max[i]), min: Math.round(d.daily.temperature_2m_min[i]), rain: d.daily.precipitation_probability_max[i] ?? 0 }));
+}
+const wmo = c => c === 0 ? 'Clear' : c <= 3 ? 'Partly cloudy' : c <= 48 ? 'Fog' : c <= 67 ? 'Rain' : c <= 77 ? 'Snow' : c <= 82 ? 'Showers' : c >= 95 ? 'Thunderstorm' : 'Cloudy';
+
+/* ---- trip generation ---- */
+const PER_DAY = { budget: 2500, mid: 6000, premium: 14000 };
+async function buildTrip(a) {
+  let city = findCity(a.destination), stops, mode = 'sample';
+  let center;
+  if (city) { center = { lat: city.lat, lon: city.lon }; stops = city.stops; }
+  else {
+    mode = 'live';
+    const g = await geocode(a.destination).catch(() => { throw new Error('Could not reach the map search. Check your internet, or try one of the sample cities: Jaipur, Goa, Manali, Udaipur, Kochi, Varanasi, Delhi, Mumbai.'); });
+    if (!g) throw new Error(`Could not find "${a.destination}". Try a more specific name.`);
+    center = { lat: g.lat, lon: g.lon }; city = { name: g.name, food: [], stay: [] };
+    stops = await osmAttractions(center).catch(() => { throw new Error('The places service is busy right now. Please try again in a minute.'); });
+    if (!stops.length) throw new Error('No named attractions found near there in OpenStreetMap. Try a larger city.');
+  }
+  const need = a.days * 3, pool = stops.map(([name, lat, lon]) => ({ name, lat, lon }));
+  const picked = []; let cur = center; const left = pool.slice(0, Math.max(need + 4, 8));
+  while (left.length && picked.length < need) { let bi = 0, bd = 1e9; left.forEach((p, i) => { const d = km(cur, p); if (d < bd) { bd = d; bi = i; } }); cur = left.splice(bi, 1)[0]; picked.push(cur); }
+  let wx = null; try { wx = await forecast(center.lat, center.lon); } catch {}
+  const days = Array.from({ length: a.days }, (_, i) => ({ title: 'Day ' + (i + 1), stops: picked.slice(i * 3, i * 3 + 3), eat: city.food.slice(i * 2, i * 2 + 2), weather: wx ? wx[i] || null : null }));
+  const pp = a.budget / a.people / a.days, level = a.budget && pp < 3500 ? 'budget' : a.budget && pp > 10000 ? 'premium' : 'mid';
+  const per = PER_DAY[level] * a.days;
+  return { destination: city.name, center, days, people: a.people, style: a.style, companions: a.companions, stays: city.stay, mode, budget: a.budget, notes: a.notes,
+    estimate: { level, per, total: per * a.people }, summary: `${a.days} days in ${city.name} for ${a.people} (${a.companions}), a ${a.style} trip. Stops are ordered so nearby places share a day.` };
+}
+const dayKm = (it, d) => { let t = 0, prev = it.center; d.stops.forEach(s => { t += km(prev, s); prev = s; }); return t; };
+function toText(it, title) {
+  const L = [`${title || 'Voyara trip'} - ${it.destination}`, `Travellers: ${it.people}`, ''];
+  it.days.forEach(d => { L.push(d.title + (d.weather ? ` (forecast ${d.weather.min}-${d.weather.max} C, rain ${d.weather.rain}%)` : '')); d.stops.forEach((s, i) => L.push(`  ${i + 1}. ${s.name}`)); if (d.eat.length) L.push('  Food ideas: ' + d.eat.join(', ')); L.push(`  Approx. travel: ${dayKm(it, d).toFixed(1)} km straight-line`, ''); });
+  if (it.stays.length) L.push('Where to stay (areas): ' + it.stays.join('; '), '');
+  L.push(`Rough estimate: ${inr(it.estimate.per)} per person (${inr(it.estimate.total)} total). Planning estimate only, not live prices.`);
+  return L.join('\n');
+}
+
+/* ---- UI state ---- */
+const UI = { menu: false, wiz: { step: 0, ans: {} }, busy: false, err: '', current: null, curId: null, day: 'all', wx: null, chat: [], gsel: 0 };
+const QS = [
+  { k: 'destination', q: 'Where do you want to travel?', t: 'text', ph: 'e.g. Jaipur, Goa, Manali, Paris' },
+  { k: 'start', q: 'What is your starting location? (optional)', t: 'text', ph: 'e.g. Bengaluru', opt: 1 },
+  { k: 'days', q: 'How many days is the trip? (1 to 10)', t: 'number', ph: '4', min: 1, max: 10 },
+  { k: 'budget', q: 'Approximate total budget in ₹? Enter 0 if unsure.', t: 'number', ph: '40000', min: 0 },
+  { k: 'people', q: 'How many people are travelling?', t: 'number', ph: '3', min: 1, max: 30 },
+  { k: 'style', q: 'What kind of experience do you prefer?', t: 'choice', o: [['cultural', 'Culture & history'], ['adventure', 'Adventure'], ['relaxation', 'Relaxation'], ['food', 'Food'], ['nature', 'Nature']] },
+  { k: 'companions', q: 'Who are you travelling with?', t: 'choice', o: [['family', 'Family'], ['friends', 'Friends'], ['solo', 'Alone'], ['partner', 'Partner']] },
+  { k: 'notes', q: 'Any special requirements? (wheelchair access, vegetarian, kids...)', t: 'text', ph: 'Type here or skip', opt: 1 },
+];
+const toast = m => { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2400); };
+
+/* ---- views ---- */
+const NAV = [['dashboard', 'Dashboard', 'home'], ['plan', 'Plan my trip', 'route'], ['trips', 'My trips', 'bookmark'], ['budget', 'Budget', 'wallet'], ['packing', 'Packing list', 'bag'], ['weather', 'Weather', 'cloud'], ['group', 'Group travel', 'users'], ['assistant', 'Assistant', 'bot']];
+
+function landing() {
+  const F = [['route', 'Plan in minutes', 'Answer eight quick questions and get a day-by-day itinerary on a live map.', '#5B3FF0'], ['bot', 'Ask the assistant', 'Packing, budget and safety tips with your trip in mind.', '#2F7BFF'], ['map', 'Real map & routes', 'Stops on an OpenStreetMap map, grouped by distance.', '#00C2B8'], ['cloud', 'Weather aware', 'Seven-day forecast for your destination.', '#FFB020'], ['wallet', 'Budget tracker', 'Log expenses and see where money goes.', '#FF6B4A'], ['users', 'Travel together', 'Create a group and split costs fairly.', '#5B3FF0']];
+  const S = [['1', 'Tell us the basics', 'Where, how long, how many people and what you enjoy.'], ['2', 'Get your plan', 'Nearby places are grouped into the same day.'], ['3', 'Make it yours', 'Edit, save, print or download your trip.']];
+  return `<section class="hero"><header>${brand()}<div class="row"><a class="btn btn-line" href="#/login">Log in</a><a class="btn btn-accent" href="#/signup">Get started</a></div></header>
+  <div class="copy"><span class="glass">${ic('spark', 'style="color:var(--sun)"')} Your smart travel companion</span>
+  <h1>Plan less.<br><span class="grad">Wander more.</span></h1>
+  <p class="lead">Tell Voyara where you want to go. It plans the days, orders the stops sensibly, checks the weather and keeps your budget and group in one place.</p>
+  <div class="row"><a class="btn btn-accent" style="padding:14px 24px;font-size:16px" href="#/signup">Plan my first trip</a><a class="btn btn-white" style="padding:14px 24px;font-size:16px" href="#/login">I already have an account</a></div></div></section>
+  <section class="sec"><h2>Everything for the trip, in one place</h2><div class="grid g3" style="margin-top:34px">${F.map(([i, t, d, c]) => `<div class="card"><div class="ico" style="background:${c}">${ic(i)}</div><h3 style="font-size:18px">${t}</h3><p class="muted" style="font-size:14px;margin:6px 0 0">${d}</p></div>`).join('')}</div>
+  <h2 style="margin-top:70px">How it works</h2><div class="grid g3" style="margin-top:28px">${S.map(([n, t, d]) => `<div class="step"><div class="n">${n}</div><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
+  <p class="muted" style="text-align:center;margin-top:44px;font-size:13px">Voyara prototype. Map data © OpenStreetMap contributors. Demo data stays in your browser.</p></section>`;
+}
+function auth(mode) {
+  const su = mode === 'signup';
+  return `<div class="authwrap"><div class="authcard"><div style="margin-bottom:14px">${brand(false)}</div><h2 style="font-size:24px">${su ? 'Create your account' : 'Welcome back'}</h2>
+  <p class="muted" style="font-size:13px">Demo mode: your account and trips stay on this device only.</p>
+  <form id="authform" data-mode="${mode}">${su ? '<label for="nm">Name</label><input class="input" id="nm" required minlength="2" autocomplete="name">' : ''}
+  <label for="em">Email</label><input class="input" id="em" type="email" required autocomplete="email">
+  <label for="pw">Password</label><input class="input" id="pw" type="password" required minlength="6" autocomplete="${su ? 'new-password' : 'current-password'}">
+  <div id="autherr" style="margin-top:12px"></div>
+  <button class="btn btn-primary" style="width:100%;margin-top:16px">${su ? 'Sign up' : 'Log in'}</button></form>
+  <p style="font-size:14px;text-align:center;margin:16px 0 0">${su ? 'Already have an account? <a href="#/login"><b>Log in</b></a>' : 'New here? <a href="#/signup"><b>Create an account</b></a>'}</p></div></div>`;
+}
+function shell(route, body, title, sub) {
+  return `<div class="shell"><aside class="side ${UI.menu ? 'open' : ''}">${brand()}${NAV.map(([r, t, i]) => `<a class="nav ${route === r ? 'on' : ''}" href="#/app/${r}">${ic(i)} ${t}</a>`).join('')}</aside>
+  <div class="main"><div class="top"><button class="menu" data-act="menu" aria-label="Menu">${ic('menu')}</button><span class="muted" style="font-size:14px">Hello, <b style="color:var(--ink)">${esc(me().name)}</b></span><button class="btn btn-ghost btn-sm" data-act="logout">${ic('out')} Log out</button></div>
+  <div class="page"><h1>${title}</h1><p class="sub">${sub || ''}</p>${body}</div></div></div>`;
+}
+function dashboard() {
+  const d = D(), soon = new Date(Date.now() + 3 * 864e5).toISOString().slice(0, 10);
+  const due = d.reminders.filter(r => !r.done && r.date <= soon);
+  const T = [['plan', 'Plan my entire trip', 'Answer a few questions and get a day-wise plan.', 'route', '#5B3FF0', 1], ['trips', 'My trips', `${d.trips.length} saved`, 'bookmark', '#2F7BFF'], ['budget', 'Budget & expenses', 'Track what you spend.', 'wallet', '#FF6B4A'], ['packing', 'Packing list', 'Never forget the essentials.', 'bag', '#FFB020'], ['weather', 'Weather', '7-day forecast.', 'cloud', '#00C2B8'], ['group', 'Group travel', 'Split costs with friends.', 'users', '#5B3FF0'], ['assistant', 'Assistant', 'Quick travel tips.', 'bot', '#2F7BFF']];
+  const body = `${due.length ? `<div class="note warn" style="margin-bottom:16px"><b>Reminders due soon</b><ul style="margin:6px 0 0;padding-left:18px">${due.map(r => `<li>${esc(r.date)}: ${esc(r.title)}</li>`).join('')}</ul></div>` : ''}
+  <div class="grid g3">${T.map(([r, t, s, i, c, m]) => `<a class="card tile ${m ? 'main' : ''}" href="#/app/${r}"><span class="ico" style="background:${c};margin:0">${ic(i)}</span><span><h3>${t}</h3><p>${s}</p></span></a>`).join('')}</div>
+  <div class="card" style="margin-top:20px"><h3 style="font-size:17px">Reminders</h3><form id="remform" class="row" style="margin-top:12px"><input class="input" style="flex:2;min-width:180px" id="rt" placeholder="e.g. Book train tickets" required><input class="input" style="flex:1;min-width:150px" id="rd" type="date" required><button class="btn btn-primary">Add</button></form>
+  <div style="margin-top:8px">${d.reminders.map((r, i) => `<div class="stop"><input type="checkbox" data-act="remdone" data-i="${i}" ${r.done ? 'checked' : ''} aria-label="Done"><div style="flex:1;${r.done ? 'text-decoration:line-through;opacity:.5' : ''}">${esc(r.title)} <span class="muted">· ${esc(r.date)}</span></div><button class="btn btn-del btn-sm" data-act="remdel" data-i="${i}">Delete</button></div>`).join('') || '<p class="muted" style="font-size:14px">No reminders yet.</p>'}</div></div>`;
+  return shell('dashboard', body, `Where to next, ${esc(me().name.split(' ')[0])}?`, 'Plan My Entire Trip is the best place to start.');
+}
+function planner() {
+  if (UI.current) return shell('plan', itinerary(), 'Your trip', '');
+  const w = UI.wiz, cur = QS[w.step];
+  const hist = QS.slice(0, w.step).map(q => `<div class="bubble q">${q.q}</div><div class="bubble a">${esc(w.ans[q.k + '_l'] ?? w.ans[q.k] ?? 'Skipped')}</div>`).join('');
+  const input = UI.busy ? `<div class="row"><span class="spin"></span> Building your plan...</div>` : cur.t === 'choice'
+    ? `<div class="opts">${cur.o.map(([v, l]) => `<button class="btn btn-ghost" data-act="ans" data-v="${v}" data-l="${esc(l)}">${l}</button>`).join('')}</div>`
+    : `<form id="wizform" class="row"><input class="input" style="flex:1;min-width:200px" id="wv" type="${cur.t}" placeholder="${cur.ph}" ${cur.min != null ? `min="${cur.min}"` : ''} ${cur.max ? `max="${cur.max}"` : ''} ${cur.opt ? '' : 'required'} autofocus><button class="btn btn-primary">${ic('send')} Send</button>${cur.opt ? '<button type="button" class="btn btn-ghost" data-act="skip">Skip</button>' : ''}</form>`;
+  const body = `<div class="chat"><div class="bubble q">Hi! I'm Voyara. Let's plan your trip with a few quick questions.</div>${hist}${UI.busy ? '' : `<div class="bubble q">${cur.q}</div>`}${UI.err ? `<div class="err" style="margin:8px 0">${esc(UI.err)}</div>` : ''}${input}<p class="muted" style="font-size:12.5px;margin-top:14px">Sample cities (Jaipur, Goa, Manali, Udaipur, Kochi, Varanasi, Delhi, Mumbai) work offline. Other places use live OpenStreetMap search.</p></div>`;
+  return shell('plan', body, 'Plan my entire trip', 'Answer eight quick questions.');
+}
+function itinerary() {
+  const it = UI.current, sel = UI.day;
+  const days = sel === 'all' ? it.days : [it.days[sel]];
+  const wx = d => d.weather ? `<span class="chip">${wmo(d.weather.code)} · ${d.weather.min}-${d.weather.max}°C · rain ${d.weather.rain}%</span>${d.weather.rain >= 60 ? ' <span class="badge">Rainy: add indoor stops</span>' : ''}` : '';
+  const none = it.days.every(d => !d.stops.length);
+  return `<div class="row noprint" style="margin-bottom:6px"><button class="btn btn-ghost btn-sm" data-act="restart">← New plan</button><button class="btn btn-primary btn-sm" data-act="savetrip">Save trip</button><button class="btn btn-ghost btn-sm" data-act="dl">Download .txt</button><button class="btn btn-ghost btn-sm" data-act="print">Print / PDF</button></div>
+  <div class="card" style="margin:12px 0"><h2 style="font-size:24px">${esc(it.destination)}</h2><p class="muted" style="margin:6px 0 10px">${esc(it.summary)}</p>
+  <div class="row"><span class="chip">${it.days.length} days</span><span class="chip">${it.people} traveller${it.people > 1 ? 's' : ''}</span><span class="chip">${it.mode === 'sample' ? 'Sample data' : 'Live OpenStreetMap'}</span></div></div>
+  <div class="tabs noprint"><button class="tab ${sel === 'all' ? 'on' : ''}" data-act="day" data-d="all">All days</button>${it.days.map((d, i) => `<button class="tab ${sel === i ? 'on' : ''}" data-act="day" data-d="${i}">${d.title}</button>`).join('')}</div>
+  ${none ? '<div class="err">No stops found for this place.</div>' : ''}
+  <div class="split"><div>${days.map(d => { const di = it.days.indexOf(d); return `<div class="card" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h3 style="font-size:17px">${d.title}</h3><span class="muted" style="font-size:12.5px">~${dayKm(it, d).toFixed(1)} km straight-line</span></div><div style="margin:6px 0">${wx(d)}</div>
+  ${d.stops.map((s, i) => `<div class="stop"><span class="pinn" style="background:${COLORS[di % 10]}">${i + 1}</span><div style="flex:1"><b>${esc(s.name)}</b></div><button class="btn btn-del btn-sm noprint" data-act="rmstop" data-di="${di}" data-i="${i}" aria-label="Remove ${esc(s.name)}">Remove</button></div>`).join('') || '<p class="muted">No stops left.</p>'}
+  ${d.eat.length ? `<p style="font-size:13.5px;margin:10px 0 0"><b>Food ideas:</b> ${d.eat.map(esc).join(', ')}</p>` : ''}</div>`; }).join('')}
+  ${it.stays.length ? `<div class="card" style="margin-bottom:14px"><h3 style="font-size:16px">Where to stay (areas)</h3><p style="font-size:14px;margin:8px 0 0">${it.stays.map(esc).join(' · ')}</p></div>` : ''}
+  <div class="card"><h3 style="font-size:16px">Rough budget estimate</h3><p style="margin:8px 0 2px"><b style="font-size:22px;font-family:Sora">${inr(it.estimate.per)}</b> per person · ${inr(it.estimate.total)} total <span class="chip">${it.estimate.level}</span></p><p class="muted" style="font-size:12.5px;margin:0">Planning estimate only, not live prices. Distances are straight-line.</p></div></div>
+  <div style="position:sticky;top:76px"><div id="map" aria-label="Trip map"></div><p class="muted" style="font-size:12px;margin:6px 4px">Map data © OpenStreetMap contributors</p></div></div>`;
+}
+function trips() {
+  const t = D().trips;
+  return shell('trips', t.length ? `<div class="grid g2">${t.map((x, i) => `<div class="card"><h3 style="font-size:18px">${esc(x.title)}</h3><p class="muted" style="font-size:13px;margin:6px 0 14px">${x.itinerary.days.length} days · ${x.itinerary.days.reduce((a, d) => a + d.stops.length, 0)} stops · saved ${esc(x.date)}</p><div class="row"><button class="btn btn-primary btn-sm" data-act="open" data-i="${i}">Open</button><button class="btn btn-ghost btn-sm" data-act="dltrip" data-i="${i}">Download</button><button class="btn btn-del btn-sm" data-act="rmtrip" data-i="${i}">Delete</button></div></div>`).join('')}</div>` : '<div class="card"><p>No saved trips yet.</p><a class="btn btn-primary" href="#/app/plan">Plan a trip</a></div>', 'My trips', 'Open, edit and download your saved trips.');
+}
+function budget() {
+  const d = D(), tot = d.expenses.reduce((a, e) => a + e.amount, 0), cats = {};
+  d.expenses.forEach(e => cats[e.category] = (cats[e.category] || 0) + e.amount);
+  const pct = d.limit ? Math.min(100, tot / d.limit * 100) : 0;
+  const body = `<div class="grid g2"><div class="card"><h3 style="font-size:17px">Add expense</h3><form id="expform" style="display:grid;gap:10px;margin-top:12px"><input class="input" id="et" placeholder="What did you spend on?" required><div class="row"><input class="input" style="flex:1" id="ea" type="number" min="1" placeholder="Amount ₹" required><select class="input" style="flex:1" id="ec">${['Stay', 'Food', 'Transport', 'Activities', 'Shopping', 'Other'].map(c => `<option>${c}</option>`).join('')}</select></div><button class="btn btn-primary">Add</button></form></div>
+  <div class="card"><h3 style="font-size:17px">Total spent</h3><p style="font-family:Sora,system-ui,sans-serif;font-size:30px;font-weight:800;margin:8px 0">${inr(tot)}</p><form id="limform" class="row"><input class="input" style="flex:1" id="lim" type="number" min="0" placeholder="Budget limit ₹" value="${d.limit || ''}"><button class="btn btn-ghost">Set</button></form>${d.limit ? `<div class="bar" style="margin-top:12px"><i style="width:${pct}%;${tot > d.limit ? 'background:var(--coral)' : ''}"></i></div><p style="font-size:13px;margin:6px 0 0">${tot > d.limit ? `<b style="color:#c0392b">Over budget by ${inr(tot - d.limit)}</b>` : `${inr(d.limit - tot)} left`}</p>` : ''}</div></div>
+  <div class="grid g2" style="margin-top:16px"><div class="card"><h3 style="font-size:17px">By category</h3>${Object.entries(cats).map(([c, v]) => `<div style="margin:12px 0"><div class="row" style="justify-content:space-between;font-size:13.5px"><b>${esc(c)}</b><span>${inr(v)}</span></div><div class="bar"><i style="width:${v / tot * 100}%"></i></div></div>`).join('') || '<p class="muted" style="font-size:14px">Nothing yet.</p>'}</div>
+  <div class="card"><h3 style="font-size:17px">Expenses</h3>${d.expenses.map((e, i) => `<div class="stop"><div style="flex:1"><b>${esc(e.title)}</b><div class="muted" style="font-size:12.5px">${esc(e.category)} · ${esc(e.date)}</div></div><b>${inr(e.amount)}</b><button class="btn btn-del btn-sm" data-act="rmexp" data-i="${i}">×</button></div>`).join('') || '<p class="muted" style="font-size:14px">No expenses yet.</p>'}</div></div>`;
+  return shell('budget', body, 'Budget & expenses', 'Track what you spend on the trip.');
+}
+const ESSENTIALS = ['ID and tickets', 'Phone and charger', 'Power bank', 'Light layers', 'Comfortable shoes', 'Basic medicines', 'Refillable water bottle', 'Rain jacket', 'Sunscreen', 'Cash and cards'];
+function packing() {
+  const p = D().packing, done = p.filter(x => x.c).length;
+  const body = `<div class="card"><form id="packform" class="row"><input class="input" style="flex:1;min-width:200px" id="pi" placeholder="Add an item" required><button class="btn btn-primary">Add</button><button type="button" class="btn btn-ghost" data-act="essentials">Add essentials</button></form>
+  <div class="bar" style="margin:16px 0 4px"><i style="width:${p.length ? done / p.length * 100 : 0}%"></i></div><p class="muted" style="font-size:13px;margin:0 0 8px">${done} of ${p.length} packed</p>
+  ${p.map((x, i) => `<div class="stop"><input type="checkbox" data-act="pack" data-i="${i}" ${x.c ? 'checked' : ''} id="pk${i}"><label for="pk${i}" style="flex:1;${x.c ? 'text-decoration:line-through;opacity:.5' : ''}">${esc(x.t)}</label><button class="btn btn-del btn-sm" data-act="rmpack" data-i="${i}">×</button></div>`).join('') || '<p class="muted" style="font-size:14px">Your list is empty.</p>'}</div>`;
+  return shell('packing', body, 'Packing list', 'Tick things off as you pack.');
+}
+function weather() {
+  const w = UI.wx;
+  const body = `<div class="card"><form id="wxform" class="row"><input class="input" style="flex:1;min-width:200px" id="wq" placeholder="City, e.g. Manali" required value="${esc(w?.q || '')}"><button class="btn btn-primary">Get forecast</button></form></div>
+  ${w?.loading ? '<p><span class="spin"></span> Loading...</p>' : ''}${w?.err ? `<div class="err" style="margin-top:14px">${esc(w.err)}</div>` : ''}
+  ${w?.days ? `<h3 style="margin:20px 0 10px">${esc(w.name)}</h3><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">${w.days.map(d => `<div class="card wx"><div class="muted" style="font-size:12.5px">${new Date(d.date + 'T00:00').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}</div><b>${wmo(d.code)}</b><div style="font-size:18px;font-weight:700;margin:6px 0">${d.max}° <span class="muted" style="font-weight:500">/ ${d.min}°</span></div><span class="chip">Rain ${d.rain}%</span></div>`).join('')}</div>${w.days.some(d => d.rain >= 60) ? '<div class="note warn" style="margin-top:14px">Rain is likely on some days. Plan museums, markets and cafes for those days.</div>' : ''}` : ''}
+  <p class="muted" style="font-size:12.5px;margin-top:14px">Forecast from Open-Meteo (needs internet).</p>`;
+  return shell('weather', body, 'Weather forecast', 'Check the week ahead for any place.');
+}
+function group() {
+  const gs = D().groups, g = gs[UI.gsel] || gs[0];
+  let body = `<div class="card"><form id="grpform" class="row"><input class="input" style="flex:1;min-width:200px" id="gn" placeholder="New group name, e.g. Goa Gang" required><button class="btn btn-primary">Create group</button></form></div>`;
+  if (g) {
+    const bal = {}; g.members.forEach(m => bal[m] = 0);
+    const tot = g.expenses.reduce((a, e) => a + e.amount, 0), share = g.members.length ? tot / g.members.length : 0;
+    g.expenses.forEach(e => bal[e.by] += e.amount); g.members.forEach(m => bal[m] -= share);
+    const cr = Object.entries(bal).filter(([, v]) => v > 0.5).map(([n, v]) => [n, v]).sort((a, b) => b[1] - a[1]), de = Object.entries(bal).filter(([, v]) => v < -0.5).map(([n, v]) => [n, -v]).sort((a, b) => b[1] - a[1]);
+    const pay = []; let i = 0, j = 0; while (i < de.length && j < cr.length) { const x = Math.min(de[i][1], cr[j][1]); pay.push(`${de[i][0]} pays ${cr[j][0]} ${inr(x)}`); de[i][1] -= x; cr[j][1] -= x; if (de[i][1] < 0.5) i++; if (cr[j][1] < 0.5) j++; }
+    body += `<div class="tabs">${gs.map((x, k) => `<button class="tab ${x === g ? 'on' : ''}" data-act="gsel" data-i="${k}">${esc(x.name)}</button>`).join('')}</div>
+    <div class="grid g2"><div class="card"><h3 style="font-size:17px">Members</h3><div class="row" style="margin:10px 0">${g.members.map(m => `<span class="chip">${esc(m)}</span>`).join('')}</div><form id="memform" class="row"><input class="input" style="flex:1" id="mn" placeholder="Add a friend's name" required><button class="btn btn-ghost">Add</button></form></div>
+    <div class="card"><h3 style="font-size:17px">Vote: where to go?</h3>${g.options.map((o, k) => `<div class="stop"><div style="flex:1"><b>${esc(o.name)}</b></div><span class="chip">${o.votes} vote${o.votes === 1 ? '' : 's'}</span><button class="btn btn-ghost btn-sm" data-act="vote" data-i="${k}">Vote</button></div>`).join('')}<form id="optform" class="row" style="margin-top:10px"><input class="input" style="flex:1" id="on" placeholder="Add an option" required><button class="btn btn-ghost">Add</button></form></div></div>
+    <div class="grid g2" style="margin-top:16px"><div class="card"><h3 style="font-size:17px">Add shared expense</h3><form id="gexpform" style="display:grid;gap:10px;margin-top:12px"><input class="input" id="gd" placeholder="What for?" required><div class="row"><input class="input" style="flex:1" id="ga" type="number" min="1" placeholder="Amount ₹" required><select class="input" style="flex:1" id="gb">${g.members.map(m => `<option>${esc(m)}</option>`).join('')}</select></div><button class="btn btn-primary">Add (paid by)</button></form>
+    ${g.expenses.map((e, k) => `<div class="stop"><div style="flex:1">${esc(e.desc)}<div class="muted" style="font-size:12.5px">paid by ${esc(e.by)}</div></div><b>${inr(e.amount)}</b><button class="btn btn-del btn-sm" data-act="rmgexp" data-i="${k}">×</button></div>`).join('')}</div>
+    <div class="card"><h3 style="font-size:17px">Who owes whom</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Total ${inr(tot)} · ${inr(share)} each</p>${pay.map(p => `<div class="stop"><b>${esc(p)}</b></div>`).join('') || '<p class="muted" style="font-size:14px">All settled.</p>'}</div></div>`;
+  }
+  return shell('group', body, 'Group travel', 'Vote on options and split costs fairly.');
+}
+function assistant() {
+  const body = `<div class="card" style="max-width:720px"><div class="note warn" style="margin-bottom:10px"><span class="badge">DEMO</span> Simple keyword tips. The full project connects a real AI model.</div><div class="chatbox" id="chatbox"><div class="bubble q">Hi! Ask me about packing, weather, safety or budget.</div>${UI.chat.map(m => `<div class="bubble ${m.r === 'u' ? 'a' : 'q'}">${esc(m.t)}</div>`).join('')}</div>
+  <form id="chatform" class="row" style="margin-top:10px"><input class="input" style="flex:1" id="cm" placeholder="Ask something..." required><button class="btn btn-primary">${ic('send')}</button></form></div>`;
+  return shell('assistant', body, 'Travel assistant', 'Quick tips for your trip.');
+}
+function reply(t) {
+  t = t.toLowerCase(); const dest = UI.lastDest ? ` for ${UI.lastDest}` : '';
+  if (/pack/.test(t)) return `Packing basics${dest}: ID and tickets, phone and charger, power bank, light layers, comfortable shoes, basic medicines, a refillable bottle and a rain jacket. The Packing list page can add these for you.`;
+  if (/rain|weather/.test(t)) return 'Open the Weather page for a 7-day forecast. If rain is likely, plan museums, markets and cafes, and keep viewpoints for dry days.';
+  if (/safe|emergency|police|hospital/.test(t)) return 'In India dial 112 for emergencies. Share your live location with someone you trust, keep copies of your documents and note the nearest hospital to your stay.';
+  if (/budget|cost|expens|money/.test(t)) return 'A rough split: 35% stay, 25% food, 20% transport, 15% activities, 5% buffer. Track real spending on the Budget page.';
+  return 'I am in demo mode, so I only know general tips. Try asking about packing, weather, safety or budget.';
+}
+
+/* ---- map ---- */
+let map = null;
+function drawMap() {
+  const el = $('#map'); if (map) { try { map.remove(); } catch {} map = null; } if (!el || !UI.current) return;
+  if (typeof L === 'undefined') { el.innerHTML = '<div class="note" style="margin:16px">Map library could not load (check your internet connection).</div>'; return; }
+  map = L.map(el, { scrollWheelZoom: false }).setView([UI.current.center.lat, UI.current.center.lon], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+  const pts = [], list = UI.day === 'all' ? UI.current.days.map((d, i) => [d, i]) : [[UI.current.days[UI.day], UI.day]];
+  list.forEach(([d, di]) => { const line = []; d.stops.forEach((s, i) => { const icon = L.divIcon({ className: '', html: `<div class="vy-pin" style="background:${COLORS[di % 10]}"><span>${i + 1}</span></div>`, iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -28] }); L.marker([s.lat, s.lon], { icon }).bindPopup(`<b>${esc(s.name)}</b><br>${d.title}`).addTo(map); pts.push([s.lat, s.lon]); line.push([s.lat, s.lon]); }); if (line.length > 1) L.polyline(line, { color: COLORS[di % 10], weight: 4, opacity: .8, dashArray: '8 8' }).addTo(map); });
+  if (pts.length > 1) map.fitBounds(pts, { padding: [30, 30] }); else if (pts.length === 1) map.setView(pts[0], 13);
+  setTimeout(() => map && map.invalidateSize(), 50);
+}
+
+/* ---- router ---- */
+function render() {
+  const h = location.hash.replace(/^#\/?/, ''), app = $('#app');
+  const [a, b] = h.split('/');
+  if (a === 'app') {
+    if (!me()) { location.hash = '#/login'; return; }
+    const v = { dashboard, plan: planner, trips, budget, packing, weather, group, assistant }[b || 'dashboard'] || dashboard;
+    app.innerHTML = v();
+    if (v === planner) drawMap();
+  } else if (a === 'login' || a === 'signup') { if (me()) { location.hash = '#/app/dashboard'; return; } app.innerHTML = auth(a); }
+  else app.innerHTML = landing();
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', () => { UI.menu = false; render(); });
+const rerender = () => { const y = scrollY; render(); scrollTo(0, y); };
+
+/* ---- events ---- */
+async function submitWizard(val, label) {
+  const w = UI.wiz, q = QS[w.step]; UI.err = '';
+  w.ans[q.k] = q.t === 'number' ? Number(val) : val; if (label) w.ans[q.k + '_l'] = label;
+  if (q.t === 'number' && (isNaN(w.ans[q.k]) || (q.min != null && w.ans[q.k] < q.min) || (q.max && w.ans[q.k] > q.max))) { UI.err = `Please enter a number${q.min != null ? ' from ' + q.min : ''}${q.max ? ' to ' + q.max : ''}.`; return rerender(); }
+  if (w.step < QS.length - 1) { w.step++; return rerender(); }
+  UI.busy = true; rerender();
+  try {
+    const a = w.ans; UI.current = await buildTrip({ destination: String(a.destination).trim(), days: a.days, budget: a.budget || 0, people: a.people, style: a.style, companions: a.companions, notes: a.notes || '' });
+    UI.lastDest = UI.current.destination; UI.curId = null; UI.day = 'all';
+  } catch (e) { UI.err = e.message; w.step = 0; w.ans = {}; }
+  UI.busy = false; rerender();
+}
+document.addEventListener('submit', async e => {
+  e.preventDefault(); const f = e.target.id, v = id => $('#' + id)?.value.trim();
+  if (f === 'authform') {
+    const mode = e.target.dataset.mode, em = v('em').toLowerCase(), pw = v('pw'), err = $('#autherr');
+    if (mode === 'signup') { if (DB.users[em]) { err.innerHTML = '<div class="err">An account with this email already exists.</div>'; return; } DB.users[em] = { name: v('nm'), pw }; }
+    else if (!DB.users[em] || DB.users[em].pw !== pw) { err.innerHTML = '<div class="err">Incorrect email or password.</div>'; return; }
+    DB.session = em; save(); location.hash = '#/app/dashboard';
+  } else if (f === 'wizform') { const x = v('wv'); submitWizard(x, null); }
+  else if (f === 'remform') { D().reminders.push({ title: v('rt'), date: v('rd'), done: false }); save(); rerender(); }
+  else if (f === 'expform') { D().expenses.unshift({ title: v('et'), amount: +v('ea'), category: v('ec'), date: new Date().toISOString().slice(0, 10) }); save(); rerender(); }
+  else if (f === 'limform') { D().limit = +v('lim') || 0; save(); rerender(); }
+  else if (f === 'packform') { D().packing.push({ t: v('pi'), c: false }); save(); rerender(); }
+  else if (f === 'wxform') {
+    const q = v('wq'); UI.wx = { q, loading: true }; rerender();
+    try { let c = findCity(q); let g = c ? { name: c.name, lat: c.lat, lon: c.lon } : await geocode(q); if (!g) throw new Error(`Could not find "${q}".`); UI.wx = { q, name: g.name, days: await forecast(g.lat, g.lon) }; }
+    catch (er) { UI.wx = { q, err: er.message.startsWith('Could not find') ? er.message : 'Could not load the forecast. Check your internet connection and try again.' }; }
+    rerender();
+  }
+  else if (f === 'grpform') { D().groups.push({ name: v('gn'), members: [me().name], options: [], expenses: [] }); UI.gsel = D().groups.length - 1; save(); rerender(); }
+  else if (f === 'memform') { const g = D().groups[UI.gsel]; const n = v('mn'); if (!g.members.includes(n)) g.members.push(n); save(); rerender(); }
+  else if (f === 'optform') { D().groups[UI.gsel].options.push({ name: v('on'), votes: 0 }); save(); rerender(); }
+  else if (f === 'gexpform') { D().groups[UI.gsel].expenses.push({ desc: v('gd'), amount: +v('ga'), by: v('gb') }); save(); rerender(); }
+  else if (f === 'chatform') { const t = v('cm'); UI.chat.push({ r: 'u', t }, { r: 'b', t: reply(t) }); rerender(); const b = $('#chatbox'); if (b) b.scrollTop = b.scrollHeight; }
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return; const a = b.dataset.act, i = +b.dataset.i, d = D();
+  const dl = (name, txt) => { const u = URL.createObjectURL(new Blob([txt], { type: 'text/plain' })); const l = document.createElement('a'); l.href = u; l.download = name; l.click(); URL.revokeObjectURL(u); };
+  if (a === 'menu') { UI.menu = !UI.menu; $('.side').classList.toggle('open', UI.menu); }
+  else if (a === 'logout') { DB.session = null; save(); UI.current = null; location.hash = '#/'; }
+  else if (a === 'ans') submitWizard(b.dataset.v, b.dataset.l);
+  else if (a === 'skip') submitWizard('', null);
+  else if (a === 'restart') { UI.current = null; UI.wiz = { step: 0, ans: {} }; UI.err = ''; rerender(); }
+  else if (a === 'day') { UI.day = b.dataset.d === 'all' ? 'all' : +b.dataset.d; rerender(); }
+  else if (a === 'rmstop') { UI.current.days[+b.dataset.di].stops.splice(i, 1); if (UI.curId != null && d.trips[UI.curId]) { d.trips[UI.curId].itinerary = UI.current; save(); } rerender(); }
+  else if (a === 'savetrip') { const entry = { title: UI.current.destination.split(',')[0] + ' trip', date: new Date().toISOString().slice(0, 10), itinerary: UI.current }; if (UI.curId != null && d.trips[UI.curId]) d.trips[UI.curId] = entry; else { d.trips.unshift(entry); UI.curId = 0; } save(); toast('Trip saved'); }
+  else if (a === 'dl') dl('voyara-trip.txt', toText(UI.current));
+  else if (a === 'print') window.print();
+  else if (a === 'open') { UI.current = structuredClone(d.trips[i].itinerary); UI.curId = i; UI.day = 'all'; location.hash = '#/app/plan'; rerender(); }
+  else if (a === 'dltrip') dl('voyara-trip.txt', toText(d.trips[i].itinerary, d.trips[i].title));
+  else if (a === 'rmtrip') { d.trips.splice(i, 1); UI.curId = null; save(); rerender(); }
+  else if (a === 'rmexp') { d.expenses.splice(i, 1); save(); rerender(); }
+  else if (a === 'pack') { d.packing[i].c = !d.packing[i].c; save(); rerender(); }
+  else if (a === 'rmpack') { d.packing.splice(i, 1); save(); rerender(); }
+  else if (a === 'essentials') { ESSENTIALS.forEach(t => { if (!d.packing.some(x => x.t === t)) d.packing.push({ t, c: false }); }); save(); rerender(); }
+  else if (a === 'remdone') { d.reminders[i].done = !d.reminders[i].done; save(); rerender(); }
+  else if (a === 'remdel') { d.reminders.splice(i, 1); save(); rerender(); }
+  else if (a === 'gsel') { UI.gsel = i; rerender(); }
+  else if (a === 'vote') { d.groups[UI.gsel].options[i].votes++; save(); rerender(); }
+  else if (a === 'rmgexp') { d.groups[UI.gsel].expenses.splice(i, 1); save(); rerender(); }
+});
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Voyara logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1437"/><stop offset="1" stop-color="#3B2FB8"/></linearGradient>
+    <linearGradient id="L" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00E0D0"/><stop offset="1" stop-color="#5B8CFF"/></linearGradient>
+    <linearGradient id="R" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FF6B4A"/><stop offset="1" stop-color="#FFB020"/></linearGradient>
+    <radialGradient id="S" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8"/><stop offset="1" stop-color="#FFB020"/></radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="30" fill="url(#bg)"/>
+  <circle cx="60" cy="55" r="12" fill="url(#S)"/>
+  <path d="M26 36 L58 94" fill="none" stroke="url(#L)" stroke-width="15" stroke-linecap="round"/>
+  <path d="M94 36 L58 94" fill="none" stroke="url(#R)" stroke-width="15" stroke-linecap="round"/>
+  <path d="M28 24 C 42 -2, 80 -2, 92 18" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="0.1 7.2"/>
+  <circle cx="94" cy="30" r="12" fill="#fff"/><circle cx="94" cy="30" r="4.8" fill="#0B1437"/>
+</svg>

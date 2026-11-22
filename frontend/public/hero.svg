@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1437"/><stop offset=".45" stop-color="#3B2FB8"/><stop offset=".75" stop-color="#B2479C"/><stop offset="1" stop-color="#FF8A5C"/></linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE29A"/><stop offset=".6" stop-color="#FFB020"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".8"><circle cx="180" cy="120" r="2"/><circle cx="420" cy="70" r="1.6"/><circle cx="760" cy="150" r="2"/><circle cx="1010" cy="60" r="1.8"/><circle cx="1330" cy="130" r="2.2"/><circle cx="1500" cy="260" r="1.6"/><circle cx="90" cy="300" r="1.6"/><circle cx="600" cy="260" r="1.4"/></g>
+  <circle cx="1130" cy="560" r="230" fill="url(#sun)"/>
+  <path d="M1020 150C1200 60 1330 170 1500 90" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 12"/>
+  <path d="M1500 90l-22-4 8 12 2-6z" fill="#fff" opacity=".9"/>
+  <path d="M0 640 220 470 400 600 640 400 900 620 1120 520 1360 650 1600 500V900H0z" fill="#5A2E9C" opacity=".75"/>
+  <path d="M0 720 260 560 480 690 760 520 1040 700 1300 590 1600 720V900H0z" fill="#33206F"/>
+  <path d="M0 800 300 700 560 790 880 690 1180 800 1600 720V900H0z" fill="#0B1437"/>
+</svg>
