@@ -6,6 +6,7 @@ import Landing from './pages/Landing.jsx';
 import { Login, Register, Forgot } from './pages/Auth.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Planner from './pages/Planner.jsx';
+import Create from './pages/Create.jsx';
 import Assistant from './pages/Assistant.jsx';
 import PlaceFinder from './pages/PlaceFinder.jsx';
 import Safety from './pages/Safety.jsx';
@@ -36,6 +37,7 @@ export default function App() {
       <Route element={<Protected />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/plan" element={<Planner />} />
+        <Route path="/create" element={<Create />} />
         <Route path="/assistant" element={<Assistant />} />
         <Route path="/explore" element={<PlaceFinder title="Explore Destinations" subtitle="Search any city or town to see its attractions on the map." types={[['attractions', 'Attractions']]} radius={15000} />} />
         <Route path="/nearby" element={<PlaceFinder title="Nearby Places" subtitle="Pick a category and find places around you or around any location." types={[['attractions', 'Attractions'], ['restaurants', 'Food'], ['hotels', 'Stays'], ['pharmacy', 'Pharmacies'], ['hospitals', 'Hospitals']]} locate />} />
