@@ -8,7 +8,7 @@ r.use(requireAuth);
 
 const aiConfigured = () => Boolean(process.env.GROQ_API_KEY);
 
-async function askClaude(system, messages, maxTokens = 900) {
+async function askClaude(system, messages, maxTokens = 1800) {
   const groqMessages = [
     { role: 'system', content: system },
     ...messages.map((m) => ({ role: m.role, content: m.content })),
