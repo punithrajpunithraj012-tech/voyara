@@ -40,7 +40,7 @@ async function askClaude(system, messages, maxTokens = 900) {
   return data.choices?.[0]?.message?.content || '';
 }
 
-const SYSTEM = `You are Voyara, a friendly, practical travel assistant. Keep answers concise and well organised.
+const SYSTEM = `You are MYRAVO, a friendly, practical travel assistant. Keep answers concise and well organised.
 Never invent hotel ratings, reviews, opening hours, live traffic or prices; say when something should be verified locally.
 Current trip context (JSON, may be empty): `;
 

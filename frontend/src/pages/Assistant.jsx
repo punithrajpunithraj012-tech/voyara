@@ -19,7 +19,7 @@ export default function Assistant() {
     catch (e) { setErr(e.message); } finally { setBusy(false); }
   }
   return (
-    <Page title="AI Travel Assistant" subtitle="Ask about destinations, packing, budgets, weather plans and safety.">
+    <Page title="MYRAVO AI Assistant" subtitle="Get practical help with destinations, packing, budgets, weather plans and travel decisions.">
       <div className="mx-auto max-w-3xl space-y-3">
         {ai === false && <Notice tone="demo"><b>Demo mode.</b> No AI key is connected, so replies are simple keyword tips, not real AI. Add ANTHROPIC_API_KEY to backend/.env to switch on the real assistant.</Notice>}
         {ctx && <Notice>Trip in memory: <b>{ctx.destination}</b>, {ctx.days} days, {ctx.style} style, {ctx.people} traveller(s). The assistant uses this in its answers.</Notice>}
@@ -33,7 +33,7 @@ export default function Assistant() {
         </div>
         <ErrorBox error={err} />
         <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); send(); }}>
-          <input className="input" value={text} onChange={(e) => setText(e.target.value)} placeholder="Ask Voyara anything about your trip" aria-label="Message" maxLength={1000} />
+          <input className="input" value={text} onChange={(e) => setText(e.target.value)} placeholder="Ask MYRAVO about your travel plans" aria-label="Message" maxLength={1000} />
           <button className="btn-primary" disabled={busy} aria-label="Send"><Send className="h-4 w-4" /></button>
         </form>
       </div>

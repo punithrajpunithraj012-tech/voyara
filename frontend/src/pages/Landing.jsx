@@ -20,9 +20,9 @@ export default function Landing() {
         <div className="flex gap-2"><Link to="/login" className="btn border border-white/40 text-white hover:bg-white/10">Log in</Link><Link to="/register" className="btn-accent">Get started</Link></div>
       </header>
       <div className="vy-rise mt-auto px-5 pb-16 sm:px-10 sm:pb-24">
-        <span className="glass mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold text-white"><Sparkles className="h-4 w-4 text-sun"/> Made for plans worth remembering</span>
+        <span className="glass mb-5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold text-white"><Sparkles className="h-4 w-4 text-sun"/> One space for plans worth sharing</span>
         <h1 className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-7xl">Every plan.<br/><span className="bg-gradient-to-r from-sun via-coral to-white bg-clip-text text-transparent">Every occasion.</span></h1>
-        <p className="mt-5 max-w-xl text-lg text-white/85">Trips, college events, celebrations and get-togethers — bring your people, plans and experiences together in one place.</p>
+        <p className="mt-5 max-w-xl text-lg text-white/85">From weekend trips and college activities to celebrations and get-togethers, bring the details and the people behind every plan into one shared space.</p>
         <div className="mt-8 flex flex-wrap gap-3"><Link to="/register" className="btn-accent px-6 py-3 text-base">Create your plan</Link><Link to="/login" className="btn bg-white px-6 py-3 text-base text-ink hover:bg-sand">I already have an account</Link></div>
       </div>
     </section>
