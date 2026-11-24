@@ -1,14 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Voyara logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1437"/><stop offset="1" stop-color="#3B2FB8"/></linearGradient>
-    <linearGradient id="L" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00E0D0"/><stop offset="1" stop-color="#5B8CFF"/></linearGradient>
-    <linearGradient id="R" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FF6B4A"/><stop offset="1" stop-color="#FFB020"/></linearGradient>
-    <radialGradient id="S" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8"/><stop offset="1" stop-color="#FFB020"/></radialGradient>
+    <linearGradient id="bg" x1="52" y1="28" x2="452" y2="486" gradientUnits="userSpaceOnUse"><stop stop-color="#54251A"/><stop offset="1" stop-color="#2C100C"/></linearGradient>
+    <linearGradient id="gold" x1="95" y1="82" x2="410" y2="390" gradientUnits="userSpaceOnUse"><stop stop-color="#F4D18A"/><stop offset=".52" stop-color="#C88C35"/><stop offset="1" stop-color="#F6D99C"/></linearGradient>
   </defs>
-  <rect width="120" height="120" rx="30" fill="url(#bg)"/>
-  <circle cx="60" cy="55" r="12" fill="url(#S)"/>
-  <path d="M26 36 L58 94" fill="none" stroke="url(#L)" stroke-width="15" stroke-linecap="round"/>
-  <path d="M94 36 L58 94" fill="none" stroke="url(#R)" stroke-width="15" stroke-linecap="round"/>
-  <path d="M28 24 C 42 -2, 80 -2, 92 18" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="0.1 7.2"/>
-  <circle cx="94" cy="30" r="12" fill="#fff"/><circle cx="94" cy="30" r="4.8" fill="#0B1437"/>
+  <rect x="12" y="12" width="488" height="488" rx="116" fill="url(#bg)"/>
+  <rect x="17" y="17" width="478" height="478" rx="111" stroke="#D8A64E" stroke-opacity=".55" stroke-width="5"/>
+  <path d="M111 371 229 123c10-21 43-21 53 0l119 248h-77l-68-151-68 151h-77Z" fill="url(#gold)"/>
+  <path d="M173 330h166" stroke="#4A2117" stroke-width="17" stroke-linecap="round"/>
+  <path d="M86 279c81-17 167-47 244-103 32-23 59-48 81-76" stroke="url(#gold)" stroke-width="17" stroke-linecap="round"/>
+  <path d="m397 88 49-19-18 48-8-19-23-10Z" fill="#F5D69A"/>
+  <circle cx="256" cy="368" r="17" fill="#F8E8C7" stroke="#C88C35" stroke-width="7"/>
+  <path d="M143 420h226" stroke="#E9C27A" stroke-opacity=".72" stroke-width="5" stroke-linecap="round"/>
 </svg>
