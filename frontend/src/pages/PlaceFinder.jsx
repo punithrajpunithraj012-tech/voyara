@@ -18,7 +18,7 @@ export function PlaceList({ places }) {
             <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${p.lat},${p.lon}`)}`} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1"><Navigation className="h-3 w-3" /> Directions in Google Maps</a>
             <a href={`https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=17/${p.lat}/${p.lon}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1"><ExternalLink className="h-3 w-3" /> Open map</a>
             {p.phone && <a href={`tel:${p.phone}`} className="inline-flex items-center gap-1"><Phone className="h-3 w-3" /> {p.phone}</a>}
-            {p.website && /^https?:\\/\\//.test(p.website) && <a href={p.website} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1"><Globe className="h-3 w-3" /> Website</a>}
+            {p.website && (p.website.startsWith('http://') || p.website.startsWith('https://')) && <a href={p.website} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1"><Globe className="h-3 w-3" /> Website</a>}
           </div>
         </li>))}
     </ul>
