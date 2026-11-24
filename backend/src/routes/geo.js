@@ -6,7 +6,7 @@ import { parse, wrap } from '../auth.js';
 
 const r = Router();
 const cache = new Map();
-const UA = () => `VoyaraApp/1.0 (${process.env.GEO_CONTACT || 'contact-not-set'})`;
+const UA = () => `MYRAVO/1.0 (https://voyara-iota.vercel.app; ${process.env.GEO_CONTACT || 'map-search'})`;
 
 async function cached(key, ttlMs, fn) {
   const hit = cache.get(key);
@@ -52,8 +52,23 @@ export async function findPlaces({ lat, lon, type, radius = 5000, limit = 40 }) 
   const around = `(around:${radius},${lat},${lon})`;
   const body = `[out:json][timeout:20];(${filters.map((f) => `nwr${f}["name"]${around};`).join('')});out center ${limit * 2};`;
   const key = `p:${type}:${lat.toFixed(3)}:${lon.toFixed(3)}:${radius}`;
-  const data = await cached(key, 600e3, () => getJson('https://overpass-api.de/api/interpreter', {
-    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(body) }));
+  const data = await cached(key, 600e3, async () => {
+    const payload = { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(body) };
+    const endpoints = [
+      'https://overpass-api.de/api/interpreter',
+      'https://overpass.kumi.systems/api/interpreter',
+      'https://overpass.private.coffee/api/interpreter'
+    ];
+    let lastError;
+    for (const endpoint of endpoints) {
+      try { return await getJson(endpoint, payload); }
+      catch (error) { lastError = error; }
+    }
+    const error = new Error('Nearby place search is temporarily busy. Try again in a moment, or use Search Google Maps for broader results.');
+    error.status = 503;
+    error.cause = lastError;
+    throw error;
+  });
   const seen = new Set();
   return data.elements.map((e) => {
     const t = e.tags || {};
@@ -93,7 +108,7 @@ export async function route(points, profile = 'driving') {
 }
 
 r.get('/search', wrap(async (req, res) => {
-  const { q } = parse(z.object({ q: z.string().trim().min(2).max(120) }), req.query);
+  const { q } = parse(z.object({ q: z.string().trim().min(1).max(120) }), req.query);
   res.json({ results: await geocode(q), source: 'OpenStreetMap Nominatim' });
 }));
 r.get('/places', wrap(async (req, res) => {
