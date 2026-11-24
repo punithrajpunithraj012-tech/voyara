@@ -26,3 +26,35 @@
 @keyframes vy-rise { from { opacity:0;transform:translateY(14px); } to { opacity:1;transform:none; } }
 .vy-rise { animation:vy-rise .65s ease-out both; }
 @media (prefers-reduced-motion:reduce) { .vy-rise { animation:none; } * { scroll-behavior:auto !important; } }
+
+/* MYRAVO appearance modes */
+html[data-theme="dark"] { color-scheme: dark; background: #171315; }
+html[data-theme="dark"] body { background: #171315; color: #f3e9df; }
+html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] h3 { color: #f8eee5; }
+html[data-theme="dark"] .card,
+html[data-theme="dark"] [class~="bg-white"],
+html[data-theme="dark"] [class~="bg-brand-ivory"],
+html[data-theme="dark"] [class~="bg-sand"] { background-color: #241d20; color: #f3e9df; border-color: rgba(214,173,104,.18); }
+html[data-theme="dark"] .input,
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select { background-color: #30272b; color: #f8eee5; border-color: #59464b; }
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #b9a9a9; }
+html[data-theme="dark"] .btn-ghost { background-color: #30272b; color: #f8eee5; border-color: #6b5156; }
+html[data-theme="dark"] [class~="text-ink"],
+html[data-theme="dark"] [class~="text-slate-800"],
+html[data-theme="dark"] [class~="text-slate-700"] { color: #f3e9df; }
+html[data-theme="dark"] [class~="text-slate-600"],
+html[data-theme="dark"] [class~="text-slate-500"] { color: #c2b2b2; }
+html[data-theme="dark"] [class~="bg-slate-100"],
+html[data-theme="dark"] [class~="bg-slate-200"] { background-color: #3a3034; }
+html[data-theme="dark"] [class~="border-brand-wine/10"] { border-color: rgba(214,173,104,.18); }
+.route-fields { border-left: 2px dashed rgba(103,37,42,.24); margin-left: 7px; padding-left: 14px; }
+html[data-theme="dark"] .route-fields { border-color: rgba(214,173,104,.3); }
+.route-dot { display:inline-block; width:10px; height:10px; border-radius:50%; flex:0 0 auto; }
+.route-dot-start { background:#A7A18C; box-shadow:0 0 0 4px rgba(167,161,140,.18); }
+.route-dot-end { background:#A94D3D; box-shadow:0 0 0 4px rgba(169,77,61,.16); }
+@media (prefers-reduced-motion: no-preference) {
+  .card { transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease; }
+}
