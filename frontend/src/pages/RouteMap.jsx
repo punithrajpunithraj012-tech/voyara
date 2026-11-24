@@ -64,11 +64,10 @@ export default function RouteMap() {
     text: index === 0 ? 'A' : index === res.pts.length - 1 ? 'B' : String(index + 1),
   }));
 
-  const googleUrl = res
-    ? 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(from) +
-      '&destination=' + encodeURIComponent(to) +
-      (stops.length ? '&waypoints=' + encodeURIComponent(stops.join('|')) : '')
-    : '';
+  const googleUrl = 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(from) +
+    '&destination=' + encodeURIComponent(to) +
+    (stops.length ? '&waypoints=' + encodeURIComponent(stops.join('|')) : '') +
+    '&travelmode=driving';
 
   return (
     <Page title="Maps and route planner" subtitle="Plan a journey with a clear start, destination and optional stops.">
@@ -106,6 +105,7 @@ export default function RouteMap() {
               </li>
             ))}</ol>}
           </div>
+          <a className="btn-accent w-full" href={googleUrl} target="_blank" rel="noreferrer noopener"><ExternalLink className="h-4 w-4" /> Open in Google Maps</a>
           <button className="btn-primary w-full" disabled={busy}>
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Navigation className="h-4 w-4" />}
             {busy ? 'Building your route...' : 'Find my route'}
@@ -124,7 +124,7 @@ export default function RouteMap() {
                 <div className="rounded-2xl bg-brand-ivory p-3"><p className="text-xs text-slate-600">Estimated time</p><p className="font-display text-2xl font-bold text-ink">{Math.floor(res.route.durationMin / 60)}h {res.route.durationMin % 60}m</p></div>
               </div>
               <p className="text-sm text-slate-600">Route: {res.pts.map((point) => point.label).join(' → ')}</p>
-              <a className="btn-primary w-full sm:w-auto" href={googleUrl} target="_blank" rel="noreferrer noopener"><ExternalLink className="h-4 w-4" /> Open route in Google Maps</a>
+              <a className="btn-primary w-full sm:w-auto" href={googleUrl} target="_blank" rel="noreferrer noopener"><ExternalLink className="h-4 w-4" /> Start navigation in Google Maps</a>
               <details className="text-sm" open>
                 <summary className="cursor-pointer font-semibold text-brand-wine">Turn-by-turn directions</summary>
                 <ol className="mt-2 max-h-72 list-decimal space-y-2 overflow-y-auto pl-5">{res.route.steps.map((step, index) => <li key={index}>{step.text} ({step.distanceM} m)</li>)}</ol>
