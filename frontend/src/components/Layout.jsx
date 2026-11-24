@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, LayoutDashboard, User, Compass, Plus, Users } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, User, Compass, Plus, Users, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../ThemeContext.jsx';
 import Logo from './Logo.jsx';
 import { FEATURES } from '../features.js';
 import { useAuth } from '../AuthContext.jsx';
@@ -16,6 +17,7 @@ const MOBILE_TABS = [
 export default function Layout() {
   const [open,setOpen]=useState(false);
   const {user,signOut}=useAuth();
+  const {theme,toggleTheme}=useTheme();
   const nav=useNavigate();
   const link=({isActive})=>`flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive?'bg-gradient-to-r from-brand-wine to-brand-clay text-white shadow-md':'text-white/75 hover:bg-white/10 hover:text-white'}`;
   return <div className="flex min-h-screen bg-sand">
@@ -30,7 +32,7 @@ export default function Layout() {
     <div className="flex min-w-0 flex-1 flex-col">
       <header className="sticky top-0 z-20 flex min-h-14 items-center justify-between border-b border-brand-wine/10 bg-brand-ivory/95 px-4 py-2 backdrop-blur">
         <div className="flex items-center gap-3"><button className="lg:hidden" onClick={()=>setOpen(true)} aria-label="Open all features"><Menu/></button><span className="text-sm font-bold tracking-widest text-brand-wine lg:hidden">MYRAVO</span><span className="hidden text-sm text-slate-600 lg:block">Hello, <b className="text-ink">{user?.name}</b></span></div>
-        <button className="btn-ghost" onClick={()=>{signOut();nav('/');}}><LogOut className="h-4 w-4"/> Log out</button>
+        <div className="flex items-center gap-2"><button className="btn-ghost !min-h-10 !px-3" onClick={toggleTheme} aria-label={theme==='dark'?'Switch to light mode':'Switch to dark mode'} title={theme==='dark'?'Light mode':'Dark mode'}>{theme==='dark'?<Sun className="h-4 w-4"/>:<Moon className="h-4 w-4"/>}<span className="hidden sm:inline">{theme==='dark'?'Light mode':'Dark mode'}</span></button><button className="btn-ghost" onClick={()=>{signOut();nav('/');}}><LogOut className="h-4 w-4"/> Log out</button></div>
       </header>
       <main className="flex-1 pb-24 lg:pb-5"><Outlet/></main>
     </div>
