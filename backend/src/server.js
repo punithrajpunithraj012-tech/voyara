@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import './db.js';
+import db, { initializeDatabase } from './db.js';
 import authRoutes from './routes/auth.js';
 import dataRoutes from './routes/data.js';
 import geoRoutes from './routes/geo.js';
@@ -16,6 +16,10 @@ if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 16) {
 }
 
 const app = express();
+
+// Render runs behind a reverse proxy and forwards the original client IP.
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(cors({ origin: (process.env.CLIENT_ORIGIN || 'http://localhost:5173').split(',') }));
 app.use(express.json({ limit: '1mb' }));
@@ -34,4 +38,12 @@ app.use((err, _req, res, _next) => {
 });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log(`Voyara API running on http://localhost:${port}`));
+
+try {
+  await initializeDatabase();
+  app.listen(port, () => console.log(`Voyara API running on http://localhost:${port}`));
+} catch (err) {
+  console.error('Failed to initialize PostgreSQL database:', err);
+  await db.end();
+  process.exit(1);
+}
