@@ -12,7 +12,7 @@ export default function Saved() {
 
   async function del(id) { if (!confirm('Delete this trip?')) return; await api(`/trips/${id}`, { method: 'DELETE' }).catch((e) => setErr(e.message)); setOpen(null); load(); }
   async function update() { try { await api(`/trips/${open.id}`, { method: 'PUT', body: { title: open.title, destination: open.destination, itinerary: cur } }); setMsg('Changes saved.'); load(); } catch (e) { setErr(e.message); } }
-  function download() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([itineraryToText(cur, open.title)], { type: 'text/plain' })); a.download = `Voyara-${open.id}.txt`; a.click(); URL.revokeObjectURL(a.href); }
+  function download() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([itineraryToText(cur, open.title)], { type: 'text/plain' })); a.download = `MYRAVO-${open.id}.txt`; a.click(); URL.revokeObjectURL(a.href); }
 
   if (open) return (
     <Page title={open.title} subtitle="Edit stops and notes, then save your changes."
