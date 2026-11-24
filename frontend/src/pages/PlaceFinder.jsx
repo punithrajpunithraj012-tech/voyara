@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Search, LocateFixed, ExternalLink, Phone, Globe, Loader2 } from 'lucide-react';
+import { Search, LocateFixed, ExternalLink, Phone, Globe, Loader2, Navigation } from 'lucide-react';
 import { api } from '../api.js';
-import { findGeoapifyPlaces } from '../geoapify.js';
 import MapView from '../components/MapView.jsx';
 import { Page, ErrorBox, Notice } from '../components/UI.jsx';
 
@@ -15,10 +14,11 @@ export function PlaceList({ places }) {
           <p className="text-xs text-slate-600">{[p.kind, p.cuisine && `cuisine: ${p.cuisine}`, `${p.distanceKm} km away`].filter(Boolean).join(' | ')}</p>
           {p.address && <p className="text-xs text-slate-600">{p.address}</p>}
           {p.openingHours && <p className="text-xs text-slate-600">Hours (OpenStreetMap): {p.openingHours}</p>}
-          <div className="mt-1 flex flex-wrap gap-3 text-xs font-semibold text-violet">
+          <div className="mt-2 flex flex-wrap gap-3 text-xs font-semibold text-violet">
+            <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${p.lat},${p.lon}`)}`} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1"><Navigation className="h-3 w-3" /> Directions in Google Maps</a>
             <a href={`https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=17/${p.lat}/${p.lon}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1"><ExternalLink className="h-3 w-3" /> Open map</a>
             {p.phone && <a href={`tel:${p.phone}`} className="inline-flex items-center gap-1"><Phone className="h-3 w-3" /> {p.phone}</a>}
-            {p.website && /^https?:\/\//.test(p.website) && <a href={p.website} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1"><Globe className="h-3 w-3" /> Website</a>}
+            {p.website && /^https?:\\/\\//.test(p.website) && <a href={p.website} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1"><Globe className="h-3 w-3" /> Website</a>}
           </div>
         </li>))}
     </ul>
@@ -26,7 +26,6 @@ export function PlaceList({ places }) {
 }
 
 const COLORS = { attractions: '#5B3FF0', restaurants: '#FF6B4A', hotels: '#2F7BFF', hospitals: '#E11D48', police: '#0B1437', pharmacy: '#00C2B8', gems: '#00C2B8' };
-const GEOAPIFY_CATEGORIES = { hospitals: 'healthcare.hospital,healthcare.clinic', police: 'service.police', pharmacy: 'healthcare.pharmacy' };
 
 export default function PlaceFinder({ title, subtitle, types, radius: defaultRadius = 5000, note, locate, extra }) {
   const [q, setQ] = useState(''); const [type, setType] = useState(types[0][0]); const [radius, setRadius] = useState(defaultRadius);
@@ -36,7 +35,9 @@ export default function PlaceFinder({ title, subtitle, types, radius: defaultRad
     setBusy(true);
     setErr('');
     try {
-      setPlaces(await findGeoapifyPlaces(loc, t, r));
+      const params = new URLSearchParams({ lat: String(loc.lat), lon: String(loc.lon), type: t, radius: String(r) });
+      const data = await api('/geo/places?' + params.toString());
+      setPlaces(data.places || []);
     } catch (e) {
       setErr(e.message);
       setPlaces(null);
@@ -81,7 +82,7 @@ export default function PlaceFinder({ title, subtitle, types, radius: defaultRad
             <div className="card max-h-[32rem] overflow-y-auto lg:col-span-2">
               <p className="mb-2 text-sm text-slate-600">Near <b className="text-ink">{where.name.split(',').slice(0, 2).join(',')}</b></p>
               {places && <PlaceList places={places} />}
-              <p className="mt-3 text-xs text-slate-500">Source: OpenStreetMap via Overpass API. Community data: no ratings, reviews or live information.</p>
+              <p className="mt-3 text-xs text-slate-500">Place data: OpenStreetMap community contributors. Google Maps opens separately for navigation. Community data may not include ratings, reviews or live information.</p>
             </div>
           </div>)}
         {!where && !busy && <p className="text-center text-sm text-slate-500">Search for a place to see results on the map.</p>}
