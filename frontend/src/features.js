@@ -1,4 +1,4 @@
-import { Route, Bot, Compass, Map, MapPin, Hotel, Utensils, Wallet, CloudSun, Users, Gem, ShieldCheck, Bookmark, Backpack } from 'lucide-react';
+import { Route, Bot, Compass, Map, MapPin, Hotel, Utensils, Wallet, CloudSun, Users, Gem, ShieldCheck, Bookmark, Backpack, CalendarDays } from 'lucide-react';
 
 export const FEATURES = [
   { to: '/plan', title: 'Plan My Entire Trip', desc: 'Answer a few questions and get a day-wise plan.', icon: Route, color: '#5B3FF0', main: true },
@@ -11,6 +11,7 @@ export const FEATURES = [
   { to: '/budget', title: 'Budget and Expenses', desc: 'Track what you spend.', icon: Wallet, color: '#00C2B8' },
   { to: '/weather', title: 'Weather Forecast', desc: '7-day forecast and rainy-day ideas.', icon: CloudSun, color: '#FFB020' },
   { to: '/group', title: 'Group Travel', desc: 'Share, vote and split costs.', icon: Users, color: '#5B3FF0' },
+  { to: '/timetable', title: 'Timetable and Planner', desc: 'Organise personal routines, team meetings and group events.', icon: CalendarDays, color: '#A94D3D' },
   { to: '/gems', title: 'Hidden Gems', desc: 'Viewpoints, waterfalls and quiet spots.', icon: Gem, color: '#00C2B8' },
   { to: '/safety', title: 'Travel Safety', desc: 'Hospitals, police and emergency numbers.', icon: ShieldCheck, color: '#FF6B4A' },
   { to: '/saved', title: 'My Saved Trips', desc: 'Open, edit and download trips.', icon: Bookmark, color: '#2F7BFF' },
