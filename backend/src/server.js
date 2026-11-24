@@ -24,7 +24,7 @@ app.use(helmet());
 app.use(cors({ origin: (process.env.CLIENT_ORIGIN || 'http://localhost:5173').split(',') }));
 app.use(express.json({ limit: '1mb' }));
 
-app.get('/api/health', (_req, res) => res.json({ ok: true, aiConfigured: Boolean(process.env.GROQ_API_KEY) }));
+app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'MYRAVO API', apiVersion: '2026-11-24', aiConfigured: Boolean(process.env.GROQ_API_KEY) }));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }), authRoutes);
 app.use('/api/geo', requireAuth, rateLimit({ windowMs: 60 * 1000, max: 120 }), geoRoutes);
 app.use('/api/ai', rateLimit({ windowMs: 60 * 1000, max: 30 }), aiRoutes);
