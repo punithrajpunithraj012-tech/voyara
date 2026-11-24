@@ -58,3 +58,16 @@ html[data-theme="dark"] .route-fields { border-color: rgba(214,173,104,.3); }
 @media (prefers-reduced-motion: no-preference) {
   .card { transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease; }
 }
+
+html[data-theme="dark"] header { background-color: rgba(36,29,32,.96); border-color: rgba(214,173,104,.18); }
+html[data-theme="dark"] nav[aria-label="Main mobile navigation"] { background-color: rgba(36,29,32,.97); border-color: rgba(214,173,104,.18); }
+html[data-theme="dark"] .leaflet-container { background: #30272b; }
+html[data-theme="dark"] .leaflet-popup-content-wrapper,
+html[data-theme="dark"] .leaflet-popup-tip { background: #30272b; color: #f8eee5; }
+html[data-theme="dark"] .leaflet-control-zoom a { background: #30272b; color: #f8eee5; border-color: #59464b; }
+html[data-theme="dark"] .bg-brand-ivory\/70,
+html[data-theme="dark"] .bg-white\/70,
+html[data-theme="dark"] .bg-white\/95 { background-color: rgba(36,29,32,.96); }
+html[data-theme="dark"] .text-brand-wine { color: #e2bd83; }
+html[data-theme="dark"] .text-violet { color: #e2bd83; }
+html[data-theme="dark"] .chip { background: rgba(214,173,104,.16); color: #e2bd83; }
