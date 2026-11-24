@@ -8,7 +8,7 @@ r.use(requireAuth);
 
 const aiConfigured = () => Boolean(process.env.GROQ_API_KEY);
 
-async function askClaude(system, messages, maxTokens = 900) {
+async function askClaude(system, messages, maxTokens = 1800) {
   const groqMessages = [
     { role: 'system', content: system },
     ...messages.map((m) => ({ role: m.role, content: m.content })),
@@ -31,7 +31,7 @@ async function askClaude(system, messages, maxTokens = 900) {
   if (!res.ok) {
     const errorBody = await res.text();
     console.error('Groq API error:', errorBody);
-    const e = new Error('The AI service returned an error. Check GROQ_API_KEY in backend/.env.');
+    const e = new Error('The AI service returned an error. Check the GROQ_API_KEY setting in your backend's Render environment.');
     e.status = 502;
     throw e;
   }
@@ -40,8 +40,23 @@ async function askClaude(system, messages, maxTokens = 900) {
   return data.choices?.[0]?.message?.content || '';
 }
 
-const SYSTEM = `You are Voyara, a friendly, practical travel assistant. Keep answers concise and well organised.
-Never invent hotel ratings, reviews, opening hours, live traffic or prices; say when something should be verified locally.
+const SYSTEM = `You are Voyara, a premium, thoughtful travel-planning companion. Make travel feel exciting, personal, practical and easy to act on.
+
+RESPONSE STYLE:
+- Write in polished, friendly English. Be specific and useful, never generic or robotic.
+- Use clean Markdown: a clear title, short intro, descriptive section headings (##), concise bullets, numbered steps where useful, and compact Markdown tables for budgets or comparisons.
+- Use a few tasteful emoji in headings when they improve scanning; do not overuse them.
+- For itinerary requests, organise each day into Morning, Afternoon and Evening with named places or activities, realistic pacing, food suggestions and practical movement notes. Explain why each stop is worth visiting.
+- For budgets, show a transparent itemised breakdown, total and per-person amount when relevant, plus a contingency buffer. Make the arithmetic add up. Distinguish user-provided budget from estimates.
+- Finish with useful local tips or next steps when relevant. Avoid repeating the prompt.
+
+ACCURACY:
+- Never invent live prices, hotel availability, ratings, reviews, opening hours, weather, traffic or transport schedules. Label estimates clearly and tell the user what to verify.
+- If details are missing, make sensible assumptions and state them briefly rather than asking many questions.
+- Respect the user's budget, group size, dates, interests and accessibility needs. Do not silently exceed the budget.
+- Keep recommendations geographically sensible and avoid cramming too many stops into one day.
+- If you cannot verify a detail, say so plainly.
+
 Current trip context (JSON, may be empty): `;
 
 // Simple keyword replies so demo mode is still useful. Clearly labelled as DEMO in the response.
@@ -52,7 +67,7 @@ function demoReply(text, ctx) {
   if (/rain|weather/.test(t)) return `Check the Weather page for the 7-day forecast. If rain is likely, plan museums, galleries, cinemas and covered markets, and keep outdoor viewpoints for dry days.`;
   if (/safe|emergency|police|hospital/.test(t)) return `Open the Safety page to find nearby hospitals, police stations and pharmacies on the map. In India dial 112 for emergencies. Share your live location with someone you trust and keep copies of your documents.`;
   if (/budget|cost|expens/.test(t)) return `A rough rule: split your budget about 35% stay, 25% food, 20% transport, 15% activities, 5% buffer. Use the Budget page to track real spending.`;
-  return `I'm running in DEMO mode (no AI key connected), so I can only give general tips. Try asking about packing, weather, safety or budget. Add GROQ_API_KEY to backend/.env for full AI answers.`;
+  return `I'm running in DEMO mode (no AI key connected), so I can only give general tips. Try asking about packing, weather, safety or budget. Configure GROQ_API_KEY in your backend's Render environment for full AI answers.`;
 }
 
 r.get('/status', (_req, res) => res.json({ aiConfigured: aiConfigured() }));
