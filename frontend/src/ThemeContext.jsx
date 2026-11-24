@@ -4,8 +4,8 @@ const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    try { return localStorage.getItem('myravo-theme') || 'light'; }
-    catch { return 'light'; }
+    try { return localStorage.getItem('myravo-theme') || 'dark'; }
+    catch { return 'dark'; }
   });
 
   useEffect(() => {
