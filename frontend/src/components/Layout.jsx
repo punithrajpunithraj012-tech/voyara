@@ -8,7 +8,7 @@ import { useAuth } from '../AuthContext.jsx';
 const MOBILE_TABS = [
   { to: '/dashboard', label: 'Home', icon: LayoutDashboard },
   { to: '/explore', label: 'Explore', icon: Compass },
-  { to: '/plan', label: 'Create', icon: Plus, create: true },
+  { to: '/create', label: 'Create', icon: Plus, create: true },
   { to: '/group', label: 'Groups', icon: Users },
   { to: '/profile', label: 'Profile', icon: User },
 ];

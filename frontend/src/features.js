@@ -1,7 +1,8 @@
-import { Route, Bot, Compass, Map, MapPin, Hotel, Utensils, Wallet, CloudSun, Users, Gem, ShieldCheck, Bookmark, Backpack, CalendarDays } from 'lucide-react';
+import { PlusCircle, Route, Bot, Compass, Map, MapPin, Hotel, Utensils, Wallet, CloudSun, Users, Gem, ShieldCheck, Bookmark, Backpack, CalendarDays } from 'lucide-react';
 
 export const FEATURES = [
-  { to: '/plan', title: 'Create a Trip Plan', desc: 'Build a day-by-day itinerary, then edit and save it.', icon: Route, color: '#67252A', main: true },
+  { to: '/create', title: 'Create & Plan Anything', desc: 'Plan trips, college events, weddings, parties and team activities with AI or manually.', icon: PlusCircle, color: '#67252A', main: true },
+  { to: '/plan', title: 'Create a Trip Plan', desc: 'Build a day-by-day itinerary, then edit and save it.', icon: Route, color: '#67252A', },
   { to: '/assistant', title: 'MYRAVO AI Assistant', desc: 'Get practical help with travel ideas, packing, budgets and decisions.', icon: Bot, color: '#A94D3D' },
   { to: '/explore', title: 'Explore Places', desc: 'Discover attractions and places around a destination.', icon: Compass, color: '#A7A18C' },
   { to: '/map', title: 'Maps and Routes', desc: 'Plan multi-stop routes and review distance and directions.', icon: Map, color: '#B95743' },
