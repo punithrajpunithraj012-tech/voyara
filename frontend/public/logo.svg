@@ -1,14 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Voyara logo">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1437"/><stop offset="1" stop-color="#3B2FB8"/></linearGradient>
-    <linearGradient id="L" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00E0D0"/><stop offset="1" stop-color="#5B8CFF"/></linearGradient>
-    <linearGradient id="R" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FF6B4A"/><stop offset="1" stop-color="#FFB020"/></linearGradient>
-    <radialGradient id="S" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8"/><stop offset="1" stop-color="#FFB020"/></radialGradient>
-  </defs>
-  <rect width="120" height="120" rx="30" fill="url(#bg)"/>
-  <circle cx="60" cy="55" r="12" fill="url(#S)"/>
-  <path d="M26 36 L58 94" fill="none" stroke="url(#L)" stroke-width="15" stroke-linecap="round"/>
-  <path d="M94 36 L58 94" fill="none" stroke="url(#R)" stroke-width="15" stroke-linecap="round"/>
-  <path d="M28 24 C 42 -2, 80 -2, 92 18" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="0.1 7.2"/>
-  <circle cx="94" cy="30" r="12" fill="#fff"/><circle cx="94" cy="30" r="4.8" fill="#0B1437"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MYRAVO app icon"><defs><linearGradient id="bg" x1="38" y1="20" x2="470" y2="492" gradientUnits="userSpaceOnUse"><stop stop-color="#67252A"/><stop offset="1" stop-color="#321316"/></linearGradient><linearGradient id="gold" x1="90" y1="70" x2="420" y2="420" gradientUnits="userSpaceOnUse"><stop stop-color="#F5DDA9"/><stop offset="1" stop-color="#C18A43"/></linearGradient></defs><rect x="12" y="12" width="488" height="488" rx="112" fill="url(#bg)"/><rect x="19" y="19" width="474" height="474" rx="105" stroke="#D7B477" stroke-opacity=".48" stroke-width="4"/><path d="M145 250 226 91q10-20 30 0l111 159h-68l-43-76-40 76h-71Z" fill="url(#gold)"/><path d="M104 276c76-17 154-47 221-91 31-20 56-42 77-68" fill="none" stroke="#E7C78A" stroke-width="10" stroke-linecap="round"/><path d="m391 111 40-15-14 40-8-16-18-9Z" fill="#F7E8C7"/><path d="M84 354h344v15H84z" fill="#D8B477"/><path d="M108 350v-68h296v68" fill="none" stroke="#F1D9A7" stroke-width="9" stroke-linejoin="round"/><path d="M138 282v68m58-68v68m58-68v68m58-68v68m58-68v68" stroke="#F1D9A7" stroke-width="8"/><path d="M92 350h328v30H92z" fill="#A94D3D" stroke="#F1D9A7" stroke-width="7"/><path d="M226 380v-44q0-30 30-30t30 30v44" fill="#3A1719" stroke="#F1D9A7" stroke-width="7"/><path d="M112 380h288" stroke="#D7B477" stroke-width="7" stroke-linecap="round"/></svg>

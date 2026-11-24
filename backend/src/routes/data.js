@@ -182,6 +182,85 @@ r.delete('/reminders/:id', wrap(async (req, res) => {
   res.json({ ok: true });
 }));
 
+// ---- Timetable (personal and shared group/team schedules) ----
+
+const timetableSchema = z.object({
+  title: z.string().trim().min(1).max(120),
+  details: z.string().trim().max(500).default(''),
+  category: z.enum(['class', 'meeting', 'task', 'event', 'personal']).default('task'),
+  startsAt: z.string().datetime({ offset: true }),
+  endsAt: z.string().datetime({ offset: true }),
+  groupId: z.coerce.number().int().positive().nullable().optional().default(null)
+}).refine((d) => new Date(d.endsAt) > new Date(d.startsAt), {
+  message: 'End time must be after start time.',
+  path: ['endsAt']
+});
+
+const timetableOut = (e) => ({
+  id: e.id,
+  title: e.title,
+  details: e.details,
+  category: e.category,
+  startsAt: e.starts_at,
+  endsAt: e.ends_at,
+  groupId: e.group_id,
+  createdBy: e.user_id
+});
+
+r.get('/timetable', wrap(async (req, res) => {
+  const result = await db.query(
+    `SELECT e.* FROM timetable_events e
+     LEFT JOIN group_members gm ON gm.group_id=e.group_id AND gm.user_id=$1
+     WHERE (e.group_id IS NULL AND e.user_id=$1) OR gm.user_id=$1
+     ORDER BY e.starts_at ASC LIMIT 500`,
+    [req.userId]
+  );
+  res.json({ events: result.rows.map(timetableOut) });
+}));
+
+r.post('/timetable', wrap(async (req, res) => {
+  const d = parse(timetableSchema, req.body);
+  if (d.groupId) {
+    const member = await memberOf(d.groupId, req.userId);
+    if (!member) return res.status(403).json({ error: 'Join that group before adding a shared schedule item.' });
+  }
+  const result = await db.query(
+    `INSERT INTO timetable_events (user_id,group_id,title,details,category,starts_at,ends_at)
+     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+    [req.userId, d.groupId, d.title, d.details, d.category, d.startsAt, d.endsAt]
+  );
+  res.status(201).json({ event: timetableOut(result.rows[0]) });
+}));
+
+r.put('/timetable/:id', wrap(async (req, res) => {
+  const d = parse(timetableSchema, req.body);
+  if (d.groupId && !(await memberOf(d.groupId, req.userId))) {
+    return res.status(403).json({ error: 'Join that group before editing its schedule.' });
+  }
+  const result = await db.query(
+    `UPDATE timetable_events e SET group_id=$1,title=$2,details=$3,category=$4,starts_at=$5,ends_at=$6
+     WHERE e.id=$7 AND (
+       (e.group_id IS NULL AND e.user_id=$8) OR
+       EXISTS (SELECT 1 FROM group_members gm WHERE gm.group_id=e.group_id AND gm.user_id=$8)
+     ) RETURNING e.*`,
+    [d.groupId, d.title, d.details, d.category, d.startsAt, d.endsAt, idOf(req), req.userId]
+  );
+  if (!result.rowCount) return res.status(404).json({ error: 'Timetable item not found.' });
+  res.json({ event: timetableOut(result.rows[0]) });
+}));
+
+r.delete('/timetable/:id', wrap(async (req, res) => {
+  const result = await db.query(
+    `DELETE FROM timetable_events e WHERE e.id=$1 AND (
+       (e.group_id IS NULL AND e.user_id=$2) OR
+       EXISTS (SELECT 1 FROM group_members gm WHERE gm.group_id=e.group_id AND gm.user_id=$2)
+     ) RETURNING e.id`,
+    [idOf(req), req.userId]
+  );
+  if (!result.rowCount) return res.status(404).json({ error: 'Timetable item not found.' });
+  res.json({ ok: true });
+}));
+
 // ---- Groups ----
 
 const groupOut = (g) => ({
