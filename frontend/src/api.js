@@ -24,15 +24,3 @@ export async function api(path, { method = 'GET', body } = {}) {
   }
   return data;
 }
-
-// Each user's personal Geoapify key stays in their own browser.
-export const getGeoapifyKey = () => localStorage.getItem('vy_geoapify_key') || '';
-
-export const setGeoapifyKey = (key) => {
-  const value = String(key || '').trim();
-  if (value) {
-    localStorage.setItem('vy_geoapify_key', value);
-  } else {
-    localStorage.removeItem('vy_geoapify_key');
-  }
-};
