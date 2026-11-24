@@ -46,7 +46,7 @@ export default function PlaceFinder({ title, subtitle, types, radius: defaultRad
     }
   }
   async function search(e) {
-    e.preventDefault(); if (q.trim().length < 2) return;
+    e.preventDefault(); if (!q.trim()) { setErr('Enter a place or area to search.'); return; }
     setBusy(true); setErr('');
     try {
       const d = await api('/geo/search?q=' + encodeURIComponent(q.trim()));
@@ -70,12 +70,13 @@ export default function PlaceFinder({ title, subtitle, types, radius: defaultRad
           <input className="input min-w-[12rem] flex-1" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a city, town or area" aria-label="Location" />
           {types.length > 1 && <select className="input !w-auto" value={type} onChange={(e) => { setType(e.target.value); where && load(where, e.target.value); }} aria-label="Category">{types.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>}
           <select className="input !w-auto" value={radius} onChange={(e) => { setRadius(+e.target.value); where && load(where, type, +e.target.value); }} aria-label="Radius">{[2000, 5000, 10000, 15000, 25000].map((r) => <option key={r} value={r}>{r / 1000} km</option>)}</select>
-          <button className="btn-primary"><Search className="h-4 w-4" /> Search</button>
+          <button className="btn-primary"><Search className="h-4 w-4" /> Search MYRAVO</button>
+          {q.trim() && <a className="btn-ghost inline-flex items-center gap-2" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q.trim())}`} target="_blank" rel="noreferrer noopener">Search Google Maps <ExternalLink className="h-4 w-4" /></a>}
           {locate && <button type="button" className="btn-ghost" onClick={locateMe}><LocateFixed className="h-4 w-4" /> Use my location</button>}
         </form>
         <ErrorBox error={err} />
         {note && <Notice>{note}</Notice>}
-        {busy && <div className="flex items-center gap-2 text-sm text-slate-600"><Loader2 className="h-4 w-4 animate-spin" /> Searching OpenStreetMap...</div>}
+        {busy && <div className="flex items-center gap-2 text-sm text-slate-600"><Loader2 className="h-4 w-4 animate-spin" /> Finding nearby places...</div>}
         {where && (
           <div className="grid gap-4 lg:grid-cols-5">
             <div className="card lg:col-span-3"><MapView markers={markers} className="h-[28rem]" /></div>
