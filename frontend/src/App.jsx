@@ -16,6 +16,7 @@ import Group from './pages/Group.jsx';
 import Saved from './pages/Saved.jsx';
 import Packing from './pages/Packing.jsx';
 import Profile from './pages/Profile.jsx';
+import Timetable from './pages/Timetable.jsx';
 
 function Protected() {
   const { user, loading } = useAuth();
@@ -49,6 +50,7 @@ export default function App() {
         <Route path="/saved" element={<Saved />} />
         <Route path="/packing" element={<Packing />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/timetable" element={<Timetable />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
