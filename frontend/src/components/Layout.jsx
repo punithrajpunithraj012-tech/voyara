@@ -8,7 +8,7 @@ import { useAuth } from '../AuthContext.jsx';
 
 const feature = (path) => FEATURES.find((item) => item.to === path);
 const GROUPS = [
-  { title: 'Plan your trip', items: ['/plan', '/map', '/timetable', '/saved', '/budget', '/packing'] },
+  { title: 'Plan your trip', items: ['/plan', '/map', '/saved', '/budget', '/packing'] },
   { title: 'Discover', items: ['/explore', '/nearby', '/hotels', '/restaurants', '/gems', '/weather', '/safety'] },
   { title: 'Travel together', items: ['/group', '/assistant'] },
 ];
