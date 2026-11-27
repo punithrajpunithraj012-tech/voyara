@@ -3,15 +3,15 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: { extend: {
     colors: {
-      ink: '#151322', violet: '#7657F6', sky: '#A99AFF', aqua: '#42DCC3',
-      coral: '#FF729A', sun: '#FFC96B', sand: '#F6F5FB',
-      'brand-ink': '#171528', 'brand-wine': '#6E4EF6',
-      'brand-clay': '#9B7BFF', 'brand-gold': '#FFC96B', 'brand-ivory': '#F7F6FC'
+      ink: '#241719', violet: '#67252A', sky: '#B97868', aqua: '#66877B',
+      coral: '#C66A50', sun: '#D6AD68', sand: '#F7F1E8',
+      'brand-ink': '#241719', 'brand-wine': '#67252A',
+      'brand-clay': '#A94D3D', 'brand-gold': '#D6AD68', 'brand-ivory': '#F7F1E8'
     },
     fontFamily: { display: ['Space Grotesk', 'system-ui', 'sans-serif'], sans: ['Manrope', 'system-ui', 'sans-serif'] },
     boxShadow: {
-      glow: '0 12px 42px rgba(110,78,246,.18)',
-      'glow-strong': '0 16px 52px rgba(110,78,246,.28)'
+      glow: '0 12px 42px rgba(103,37,42,.2)',
+      'glow-strong': '0 18px 56px rgba(103,37,42,.3)'
     }
   }},
   plugins: [],
