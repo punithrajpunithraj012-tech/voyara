@@ -108,13 +108,15 @@ r.post('/forgot', wrap(async (req, res) => {
   );
 
   try {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL) {
       await sendPasswordResetEmail(email, code);
-    } else if (process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL) {
-      await sendPasswordResetEmail(email, code);
-    } else {
+    } else if (process.env.NODE_ENV === 'development') {
       console.log(`[MYRAVO DEV] Password reset code for ${email}: ${code}`);
       return res.json({ ...generic, demo: true, demoCode: code });
+    } else {
+      const error = new Error('Password reset email is not configured yet. Please try again later.');
+      error.status = 503;
+      throw error;
     }
   } catch (error) {
     await db.query('UPDATE users SET reset_token_hash=NULL, reset_expires=NULL WHERE id=$1', [user.id]);
