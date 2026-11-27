@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import db from '../db.js';
 import { signToken, requireAuth, parse, wrap } from '../auth.js';
@@ -91,7 +92,14 @@ r.post('/login', wrap(async (req, res) => {
   res.json({ token: signToken(user), user: publicUser(user) });
 }));
 
-r.post('/forgot', wrap(async (req, res) => {
+const forgotLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 5, standardHeaders: true, legacyHeaders: false });
+
+r.post('/forgot', forgotLimiter, wrap(async (req, res) => {
+  if (!(process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL) && process.env.NODE_ENV !== 'development') {
+    const error = new Error('Password reset email is not configured yet. Please try again later.');
+    error.status = 503;
+    throw error;
+  }
   const { email } = parse(z.object({ email: emailField }), req.body);
   const result = await db.query('SELECT id FROM users WHERE email = $1', [email]);
   const user = result.rows[0];
