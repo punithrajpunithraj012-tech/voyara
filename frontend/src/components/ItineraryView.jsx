@@ -8,7 +8,7 @@ import { api } from '../api.js';
 const DAY_COLORS = ['#5B3FF0', '#2F7BFF', '#00C2B8', '#FF6B4A', '#FFB020', '#E040A0', '#3A8F5C', '#8A5A2B', '#5B6B7C', '#B23B3B'];
 
 export function itineraryToText(it, title) {
-  const L = [`${title || 'Voyara itinerary'} - ${it.destination}`, `Travellers: ${it.people}`, ''];
+  const L = [`${title || 'MYRAVO itinerary'} - ${it.destination}`, `Travellers: ${it.people}`, ''];
   it.days.forEach((d) => {
     L.push(`${d.title}${d.weather ? ` (forecast ${d.weather.minC}-${d.weather.maxC} C, rain chance ${d.weather.rainChance}%)` : ''}`);
     d.stops.forEach((s, i) => L.push(`  ${i + 1}. ${s.name}${s.kind ? ` [${s.kind}]` : ''}${s.note ? ' - ' + s.note : ''}`));
@@ -39,7 +39,7 @@ export default function ItineraryView({ it, onChange }) {
       <div className="card"><div className="mb-2 flex items-center gap-2"><h2 className="text-xl font-bold">{it.destination}</h2>{!it.aiGenerated && <DemoBadge>DEMO SUMMARY</DemoBadge>}</div>
         <p className="whitespace-pre-line text-slate-700">{it.summary}</p></div>
       {it.warning && <ErrorBox error={it.warning} />}
-      {rainy && <Notice tone="demo">Rain is likely on {rainy.title}. <Link className="font-semibold text-violet underline" to={`/weather?lat=${it.center.lat}&lon=${it.center.lon}&name=${encodeURIComponent(it.destination.split(',')[0])}`}>See rainy-day alternatives</Link>.</Notice>}
+      {rainy && <Notice tone="demo">Rain is likely on {rainy.title}. <Link className="font-semibold text-brand-wine underline" to={`/weather?lat=${it.center.lat}&lon=${it.center.lon}&name=${encodeURIComponent(it.destination.split(',')[0])}`}>See rainy-day alternatives</Link>.</Notice>}
 
       <div className="card space-y-3">
         <MapView markers={markers} route={road?.geometry} className="h-96" />
@@ -49,7 +49,7 @@ export default function ItineraryView({ it, onChange }) {
           {road && <span className="text-sm font-semibold text-ink">{road.distanceKm} km, about {Math.floor(road.durationMin / 60)}h {road.durationMin % 60}m driving</span>}
         </div>
         <ErrorBox error={err} />
-        {road && <details className="text-sm"><summary className="cursor-pointer font-semibold text-violet">Turn-by-turn directions ({road.steps.length} steps)</summary>
+        {road && <details className="text-sm"><summary className="cursor-pointer font-semibold text-brand-wine">Turn-by-turn directions ({road.steps.length} steps)</summary>
           <ol className="mt-2 list-decimal space-y-1 pl-5">{road.steps.map((s, i) => <li key={i}>{s.text} ({s.distanceM} m)</li>)}</ol><p className="mt-2 text-xs text-slate-500">Source: {road.source}</p></details>}
       </div>
 
@@ -79,7 +79,7 @@ export default function ItineraryView({ it, onChange }) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="card"><h3 className="mb-2 flex items-center gap-2 font-bold"><BedDouble className="h-4 w-4 text-violet" /> Where to stay</h3>
+        <div className="card"><h3 className="mb-2 flex items-center gap-2 font-bold"><BedDouble className="h-4 w-4 text-brand-wine" /> Where to stay</h3>
           {it.stays?.length ? <ul className="list-disc pl-5 text-sm">{it.stays.map((s) => <li key={s.id}>{s.name} <span className="text-slate-500">({s.kind}{s.distanceKm != null ? `, ${s.distanceKm} km from center` : ''})</span></li>)}</ul> : <p className="text-sm text-slate-500">No stays found nearby in OpenStreetMap.</p>}
           <p className="mt-2 text-xs text-slate-500">Names only. No ratings or prices are available from this data source.</p></div>
         <div className="card"><h3 className="mb-2 font-bold">Rough budget estimate <DemoBadge>ESTIMATE</DemoBadge></h3>
