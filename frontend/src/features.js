@@ -1,4 +1,4 @@
-import { Route, Bot, Compass, Map, MapPin, Hotel, Utensils, Wallet, CloudSun, Users, Gem, ShieldCheck, Bookmark, Backpack, CalendarDays } from 'lucide-react';
+import { Route, Bot, Compass, Map, MapPin, Hotel, Utensils, Wallet, CloudSun, Users, Gem, ShieldCheck, Bookmark, Backpack } from 'lucide-react';
 
 export const FEATURES = [
   { to: '/plan', title: 'Build an Itinerary', desc: 'Create a day-by-day trip plan, edit every stop and save your journey.', icon: Route, color: '#67252A', main: true },
@@ -15,5 +15,4 @@ export const FEATURES = [
   { to: '/safety', title: 'Travel Safety', desc: 'Find nearby help and review practical safety information.', icon: ShieldCheck, color: '#B95743' },
   { to: '/saved', title: 'Saved Trips', desc: 'Reopen, update and export your saved itineraries.', icon: Bookmark, color: '#67252A' },
   { to: '/packing', title: 'Packing Checklist', desc: 'Prepare your essentials and track what is ready to go.', icon: Backpack, color: '#D6AD68' },
-  { to: '/timetable', title: 'Trip Schedule', desc: 'Keep travel dates, activities and shared plans in one timeline.', icon: CalendarDays, color: '#A94D3D' },
 ];
