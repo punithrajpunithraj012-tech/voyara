@@ -24,7 +24,22 @@ app.use(helmet());
 app.use(cors({ origin: (process.env.CLIENT_ORIGIN || 'http://localhost:5173').split(',') }));
 app.use(express.json({ limit: '1mb' }));
 
-app.get('/api/health', async (_req, res) => {\n  try {\n    await db.query('SELECT 1');\n    res.json({ ok: true, service: 'MYRAVO API', apiVersion: '2026-11-27', database: 'connected', aiConfigured: Boolean(process.env.GROQ_API_KEY), emailConfigured: Boolean(process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL) });\n  } catch (error) {\n    console.error('Health check database error:', error.message);\n    res.status(503).json({ ok: false, service: 'MYRAVO API', database: 'unavailable' });\n  }\n});
+app.get('/api/health', async (_req, res) => {
+  try {
+    await db.query('SELECT 1');
+    res.json({
+      ok: true,
+      service: 'MYRAVO API',
+      apiVersion: '2026-11-27',
+      database: 'connected',
+      aiConfigured: Boolean(process.env.GROQ_API_KEY),
+      emailConfigured: Boolean(process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL)
+    });
+  } catch (error) {
+    console.error('Health check database error:', error.message);
+    res.status(503).json({ ok: false, service: 'MYRAVO API', database: 'unavailable' });
+  }
+});
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }), authRoutes);
 app.use('/api/geo', requireAuth, rateLimit({ windowMs: 60 * 1000, max: 120 }), geoRoutes);
 app.use('/api/ai', rateLimit({ windowMs: 60 * 1000, max: 30 }), aiRoutes);
