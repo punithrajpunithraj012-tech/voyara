@@ -25,7 +25,7 @@ export function PlaceList({ places }) {
   );
 }
 
-const COLORS = { attractions: '#5B3FF0', restaurants: '#FF6B4A', hotels: '#2F7BFF', hospitals: '#E11D48', police: '#0B1437', pharmacy: '#00C2B8', gems: '#00C2B8' };
+const COLORS = { attractions: '#67252A', restaurants: '#C66A50', hotels: '#66877B', hospitals: '#B23B3B', police: '#3B3032', pharmacy: '#A9854D', gems: '#66877B' };
 
 export default function PlaceFinder({ title, subtitle, types, radius: defaultRadius = 5000, note, locate, extra }) {
   const [q, setQ] = useState(''); const [type, setType] = useState(types[0][0]); const [radius, setRadius] = useState(defaultRadius);
@@ -59,15 +59,15 @@ export default function PlaceFinder({ title, subtitle, types, radius: defaultRad
     navigator.geolocation.getCurrentPosition((pos) => { const loc = { name: 'Your location', lat: pos.coords.latitude, lon: pos.coords.longitude }; setWhere(loc); load(loc); },
       () => setErr('Location access was blocked. Allow it in your browser, or search for a place instead.'));
   }
-  const markers = [...(where ? [{ lat: where.lat, lon: where.lon, label: where.name.split(',')[0], sub: 'Search centre', color: '#FF6B4A', text: '★' }] : []),
-    ...(places || []).map((p) => ({ lat: p.lat, lon: p.lon, label: p.name, sub: p.kind, color: COLORS[type] || '#5B3FF0' }))];
+  const markers = [...(where ? [{ lat: where.lat, lon: where.lon, label: where.name.split(',')[0], sub: 'Search centre', color: '#D6AD68', text: '•' }] : []),
+    ...(places || []).map((p) => ({ lat: p.lat, lon: p.lon, label: p.name, sub: p.kind, color: COLORS[type] || '#67252A' }))];
 
   return (
     <Page title={title} subtitle={subtitle}>
       <div className="space-y-4">
         {extra}
         <form onSubmit={search} className="card flex flex-wrap gap-2">
-          <input className="input min-w-[12rem] flex-1" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a city, town or area" aria-label="Location" />
+          <input className="input min-w-[12rem] flex-1" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a destination, city or neighbourhood" aria-label="Location" />
           {types.length > 1 && <select className="input !w-auto" value={type} onChange={(e) => { setType(e.target.value); where && load(where, e.target.value); }} aria-label="Category">{types.map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>}
           <select className="input !w-auto" value={radius} onChange={(e) => { setRadius(+e.target.value); where && load(where, type, +e.target.value); }} aria-label="Radius">{[2000, 5000, 10000, 15000, 25000].map((r) => <option key={r} value={r}>{r / 1000} km</option>)}</select>
           <button className="btn-primary"><Search className="h-4 w-4" /> Search MYRAVO</button>
@@ -86,7 +86,7 @@ export default function PlaceFinder({ title, subtitle, types, radius: defaultRad
               <p className="mt-3 text-xs text-slate-500">Place data: OpenStreetMap community contributors. Google Maps opens separately for navigation. Community data may not include ratings, reviews or live information.</p>
             </div>
           </div>)}
-        {!where && !busy && <p className="text-center text-sm text-slate-500">Search for a place to see results on the map.</p>}
+        {!where && !busy && <p className="text-center text-sm text-slate-500">Search for a destination to see nearby places on the map.</p>}
       </div>
     </Page>
   );
