@@ -31,7 +31,7 @@ async function askClaude(system, messages, maxTokens = 1800) {
   if (!res.ok) {
     const errorBody = await res.text();
     console.error('Groq API error:', errorBody);
-    const e = new Error('The AI service returned an error. Check the GROQ_API_KEY setting in your backend's Render environment.');
+    const e = new Error("The AI service returned an error. Check the GROQ_API_KEY setting in your backend's Render environment.");
     e.status = 502;
     throw e;
   }
