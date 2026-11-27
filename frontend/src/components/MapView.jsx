@@ -3,34 +3,61 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const pin = (color, text = '') => L.divIcon({ className: '', html: `<div class="vy-pin" style="background:${esc(color)}"><span>${esc(text)}</span></div>`, iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -28] });
+const pin = (color, text = '') => L.divIcon({
+  className: '',
+  html: `<div class="vy-pin" style="background:${esc(color)}"><span>${esc(text)}</span></div>`,
+  iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -29]
+});
 
 // Leaflet + OpenStreetMap tiles. markers: [{lat, lon, label, sub, color, text}], route: [[lat, lon], ...]
 export default function MapView({ markers = [], route = null, className = 'h-80' }) {
   const el = useRef(null), map = useRef(null), layer = useRef(null);
+  const dataKey = JSON.stringify({ markers, route });
 
   useEffect(() => {
-    map.current = L.map(el.current, { scrollWheelZoom: false }).setView([20.59, 78.96], 4);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map.current);
-    layer.current = L.layerGroup().addTo(map.current);
-    setTimeout(() => map.current && map.current.invalidateSize(), 0);
-    return () => { map.current.remove(); map.current = null; };
+    if (!el.current) return undefined;
+    const instance = L.map(el.current, { scrollWheelZoom: false, zoomControl: true }).setView([20.59, 78.96], 5);
+    map.current = instance;
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(instance);
+    layer.current = L.layerGroup().addTo(instance);
+
+    const resizeObserver = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(() => instance.invalidateSize({ pan: false }))
+      : null;
+    resizeObserver?.observe(el.current);
+    const frame = requestAnimationFrame(() => instance.invalidateSize({ pan: false }));
+
+    return () => {
+      cancelAnimationFrame(frame);
+      resizeObserver?.disconnect();
+      instance.remove();
+      if (map.current === instance) map.current = null;
+      layer.current = null;
+    };
   }, []);
 
-  const key = JSON.stringify([markers, route ? route.length : 0]);
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current || !layer.current) return;
     layer.current.clearLayers();
-    const pts = [];
-    markers.forEach((m) => {
-      L.marker([m.lat, m.lon], { icon: pin(m.color || '#5B3FF0', m.text) })
-        .bindPopup(`<b>${esc(m.label)}</b>${m.sub ? '<br>' + esc(m.sub) : ''}`).addTo(layer.current);
-      pts.push([m.lat, m.lon]);
+    const points = [];
+    markers.forEach((marker) => {
+      if (!Number.isFinite(Number(marker.lat)) || !Number.isFinite(Number(marker.lon))) return;
+      const point = [Number(marker.lat), Number(marker.lon)];
+      L.marker(point, { icon: pin(marker.color || '#67252A', marker.text || '') })
+        .bindPopup(`<strong>${esc(marker.label || 'Travel stop')}</strong>${marker.sub ? '<br>' + esc(marker.sub) : ''}`)
+        .addTo(layer.current);
+      points.push(point);
     });
-    if (route?.length) { L.polyline(route, { color: '#5B3FF0', weight: 5, opacity: 0.85 }).addTo(layer.current); pts.push(...route); }
-    if (pts.length > 1) map.current.fitBounds(pts, { padding: [30, 30] });
-    else if (pts.length === 1) map.current.setView(pts[0], 13);
-  }, [key]); // eslint-disable-line
+    if (route?.length) {
+      L.polyline(route, { color: '#67252A', weight: 6, opacity: .9, lineCap: 'round', lineJoin: 'round' }).addTo(layer.current);
+      points.push(...route);
+    }
+    if (points.length > 1) map.current.fitBounds(L.latLngBounds(points), { padding: [36, 36], maxZoom: 14 });
+    else if (points.length === 1) map.current.setView(points[0], 13);
+  }, [dataKey]);
 
-  return <div ref={el} className={`w-full ${className}`} aria-label="Map" />;
+  return <div ref={el} className={`w-full ${className}`} role="img" aria-label="Interactive travel map showing destinations and route" />;
 }

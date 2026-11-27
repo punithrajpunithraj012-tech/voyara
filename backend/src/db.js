@@ -7,7 +7,7 @@ types.setTypeParser(20, (value) => Number(value));
 
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 export async function initializeDatabase() {

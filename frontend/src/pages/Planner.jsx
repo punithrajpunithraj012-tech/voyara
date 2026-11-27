@@ -46,11 +46,11 @@ export default function Planner() {
   }
   function download() {
     const blob = new Blob([itineraryToText(it)], { type: 'text/plain' }); const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = `Voyara-${it.destination.split(',')[0].replace(/\W+/g, '-')}.txt`; a.click(); URL.revokeObjectURL(a.href);
+    a.href = URL.createObjectURL(blob); a.download = `MYRAVO-${it.destination.split(',')[0].replace(/\W+/g, '-')}.txt`; a.click(); URL.revokeObjectURL(a.href);
   }
 
   return (
-    <Page title="Plan My Entire Trip" subtitle="Answer a few questions and Voyara builds a day-wise plan from real map data." actions={it && <button className="btn-ghost" onClick={reset}><RotateCcw className="h-4 w-4" /> Plan another trip</button>}>
+    <Page title="Build your itinerary" subtitle="Answer a few questions and MYRAVO builds a day-wise plan from real map data." actions={it && <button className="btn-ghost" onClick={reset}><RotateCcw className="h-4 w-4" /> Plan another journey</button>}>
       {!it ? (
         <div className="card mx-auto max-w-2xl">
           <div className="space-y-3" aria-live="polite">
